@@ -1,0 +1,13 @@
+#The plugin prefix. Use {P} in messages
+prefix: "&6PluginBlank &8| "
+
+plugin-messages:
+  plugin-enable: "{P} &aПThe plugin is enabled \nVersion: {VERSION} \nDeveloper: {DEVELOPER}"
+  no-perms: "{P} &You don't have permissions to use this command O_o"
+  no-console: "{P} &cThis command is only for players"
+
+event-messages:
+  player-join: "{P} &7Welcome, &6{NAME}!"
+
+command-messages:
+  main-command: "{P} &7Help with the plugin commands: \n &e/plugin-blank &7— send this message \n\Developer: {DEVELOPER} \Contact: {CONTACT_LINK}"

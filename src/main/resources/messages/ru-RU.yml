@@ -1,0 +1,13 @@
+#Префикс плагина. Используйте {P} в сообщениях
+prefix: "&6PluginBlank &8| "
+
+plugin-messages:
+  plugin-enable: "{P} &aПлагин успешно запущен! \nВерсия: {VERSION} \nРазработчик: {DEVELOPER}"
+  no-perms: "{P} &cУ вас нет прав для выполнения этой команды O_o"
+  no-console: "{P} &cЭта команда доступна только для игроков!"
+
+event-messages:
+  player-join: "{P} &7Добро пожаловать, &6{NAME}!"
+
+command-messages:
+  main-command: "{P} &7Помощь по командам плагина: \n &e/plugin-blank &7— отправить это сообщение \n\nРазработчик: {DEVELOPER} \nСвязаться: {CONTACT_LINK}"
