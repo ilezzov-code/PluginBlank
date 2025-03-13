@@ -1,5 +1,4 @@
 package ru.ilezzov.pluginBlank.utils;
 
-public class CheckVersion {
-
+public class ListUtils {
 }
