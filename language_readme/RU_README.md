@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="img/logo/pluginblank.png">
+    <img src="https://github.com/ilezzov-code/Plugin-Blank/blob/main/img/logo/pluginblank.png">
 </div>
 
 -----
@@ -8,18 +8,18 @@
 </div>
 <div align="center">
     <a href="https://t.me/ilezovofficial">
-    <img src="img/socials/contact_with_me.png" width="200"> 
+    <img src="https://github.com/ilezzov-code/Plugin-Blank/blob/main/img/socials/contact_with_me.png" width="200"> 
     </a>
 </div>
 <div align="center">
     <a href="https://t.me/ilezzov">
-    <img src="img/socials/tg_channel.png" width="200"> 
+    <img src="https://github.com/ilezzov-code/Plugin-Blank/blob/main/img/socials/tg_channel.png" width="200"> 
     </a>
 </div>
 
 ### Выберите язык:
-* <img src="img/flags/en.svg" width="15"> English
-* <img src="img/flags/ru.svg" width="15"> Русский
+* <img src="https://github.com/ilezzov-code/Plugin-Blank/blob/main/img/flags/en.svg" width="15"> [English](https://github.com/ilezzov-code/Plugin-Blank)
+* <img src="https://github.com/ilezzov-code/Plugin-Blank/blob/main/img/flags/ru.svg" width="15"> Русский
 
 ### Поддержать:
 * DA: https://www.donationalerts.com/r/ilezzov_dev
