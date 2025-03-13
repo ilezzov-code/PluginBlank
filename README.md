@@ -19,7 +19,7 @@
 </div>
 
 ### Select language:
-* <img src="img/flags/ru.svg" width="15"> Русский
+* <img src="img/flags/ru.svg" width="15"> [Русский](https://github.com/ilezzov-code/Plugin-Blank/blob/main/language_readme/RU_README.md)
 * <img src="img/flags/en.svg" width="15"> English
 
 ### Donation: 
