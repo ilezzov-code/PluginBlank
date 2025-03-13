@@ -1,12 +1,12 @@
 name: PluginBlank
 version: '1.0'
-main: ru.ilezzov.pluginBlank.PluginBlank
+main: ru.ilezzov.pluginBlank.Main
 api-version: '1.21'
 prefix: PluginBlank
 load: STARTUP
 authors: [ ILeZzoV ]
 description: The PluginBlank for your Minecraft Plugin
-website: t.me/ilezzov_dev
+website: https://t.me/ilezzov
 commands:
   plugin-blank:
     description: The main command

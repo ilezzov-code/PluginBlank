@@ -1,13 +1,26 @@
+# Плагин поддерживает все виды форматирования сообщений.
+# LEGACY — Цвет через & / § и HEX через &#rrggbb / §#rrggbb или &x&r&r&g&g&b&b / §x§r§r§g§g§b§b
+# LEGACY_ADVANCED — Цвет и HEX через &##rrggbb / §##rrggbb
+# MINI_MESSAGE — Цвет через <цвет> Подробнее — https://docs.advntr.dev/minimessage/index.html
+# И все форматы доступные на https://www.birdflop.com/resources/rgb/
+# Вы можете использовать все форматы одновременно в одном сообщении. Плагин это поддерживает
+
 #Префикс плагина. Используйте {P} в сообщениях
-prefix: "&6PluginBlank &8| "
+prefix: "&6PluginBlank &8|"
 
-plugin-messages:
-  plugin-enable: "{P} &aПлагин успешно запущен! \nВерсия: {VERSION} \nРазработчик: {DEVELOPER}"
-  no-perms: "{P} &cУ вас нет прав для выполнения этой команды O_o"
-  no-console: "{P} &cЭта команда доступна только для игроков!"
+plugin_messages:
+  enable: "{P} &7Плагин &7успешно &aзапущен! \n{P} \n&7Версия: &6{VERSION} \n{P} &7Разработчик: &e{DEVELOPER}"
+  disable: "{P} &7Плагин успешно &cвыключен!"
+  reload: "{P} &7Плагин успешно &aперезагружен"
+  no_perms: "{P} &cУ вас нет прав для выполнения этой команды O_o"
+  no_console: "{P} &cЭта команда доступна только для игроков!"
+  has_error_enable: "{P} &7Возникла ошибка при запуске плагина: &c{ERROR}"
+  has_error_reload: "{P} &7Возникла ошибка при перезагрузке плагина: &c{ERROR}"
+  latest_version: "{P} &7Вы используете &aпоследнюю &7версию плагина"
+  outdated_version: "{P} &7Вы используете устаревшую версию: &c{OUTDATED_VERS} \n&7Рекомендуем установить последнюю версию плагина: &6{LATEST_VERS} \n&7Скачать: <click:open_url:{DOWNLOAD_LINK}>&e{DOWNLOAD_LINK}"
 
-event-messages:
-  player-join: "{P} &7Добро пожаловать, &6{NAME}!"
+event_messages:
+  player_join: "{P} &7Добро пожаловать, &6{NAME}!"
 
-command-messages:
-  main-command: "{P} &7Помощь по командам плагина: \n &e/plugin-blank &7— отправить это сообщение \n\nРазработчик: {DEVELOPER} \nСвязаться: {CONTACT_LINK}"
+command_messages:
+  main_command: "{P} &7Помощь по командам плагина: \n\n&e/plugin-blank &7— отправить это сообщение \n&e/plugin-blank reload&7— перезагрузить плагин \n\n&7Разработчик: &6{DEVELOPER} \n&7Связаться: <click:open_url:{CONTACT_LINK}>&e{CONTACT_LINK}"

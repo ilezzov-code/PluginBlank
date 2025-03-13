@@ -36,7 +36,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             case "reload" -> {
                 if(hasPermission(sender, COMMAND_MAIN_COMMAND_RELOAD)) {
                     try {
-                        Main.reloadFiles();
+                        Main.loadFiles();
                         Main.reloadPrefix();
 
                         commandPlaceholders.replace("{P}", getPrefix());
@@ -64,7 +64,9 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         final List<String> completions = new ArrayList<>();
 
         if(args.length == 1) {
-            completions.add("reload");
+            if(hasPermission(sender, COMMAND_MAIN_COMMAND_RELOAD)) {
+                completions.add("reload");
+            }
         }
 
         return completions;

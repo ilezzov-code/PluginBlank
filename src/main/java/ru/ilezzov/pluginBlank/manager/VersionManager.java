@@ -1,4 +1,4 @@
-package ru.ilezzov.pluginBlank.utils;
+package ru.ilezzov.pluginBlank.manager;
 
 import lombok.Getter;
 
@@ -8,25 +8,28 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import static ru.ilezzov.pluginBlank.Main.*;
-
 @Getter
-public class PluginVersionChecker {
+public class VersionManager {
     private final String localPluginVersion;
     private final String currentPluginVersion;
+    private final String urlToFileVersion;
 
-    public PluginVersionChecker(final String localPluginVersion) throws URISyntaxException, IOException, InterruptedException {
+    public VersionManager(final String localPluginVersion, final String urlToFileVersion) throws URISyntaxException, IOException, InterruptedException {
         this.localPluginVersion = localPluginVersion;
-        this.currentPluginVersion = getCurrentPluginVersion();
+        this.urlToFileVersion = urlToFileVersion;
+        this.currentPluginVersion = getCurrentPluginVersionFromGitHub();
     }
 
     public boolean check() throws URISyntaxException, IOException, InterruptedException {
         return localPluginVersion.equalsIgnoreCase(this.currentPluginVersion);
     }
 
-    private String getCurrentPluginVersion() throws URISyntaxException, IOException, InterruptedException {
+    private String getCurrentPluginVersionFromGitHub() throws URISyntaxException, IOException, InterruptedException {
         final HttpClient httpClient = HttpClient.newHttpClient();
-        final HttpRequest httpRequest = HttpRequest.newBuilder(new URI(URL_TO_FILE_VERSION))
+
+        assert this.urlToFileVersion != null;
+
+        final HttpRequest httpRequest = HttpRequest.newBuilder(new URI(this.urlToFileVersion))
                 .GET()
                 .build();
 
@@ -35,4 +38,5 @@ public class PluginVersionChecker {
 
         return httpResponse.body();
     }
+
 }

@@ -1,10 +1,10 @@
 package ru.ilezzov.pluginBlank.logging;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.ConsoleCommandSender;
-import ru.ilezzov.pluginBlank.PluginBlank;
+import ru.ilezzov.pluginBlank.Main;
 
 import static org.bukkit.Bukkit.*;
-import static ru.ilezzov.pluginBlank.PluginBlank.legacySerialize;
 
 public class PaperLogger implements Logger {
     private final ConsoleCommandSender consoleCommandSender;
@@ -14,12 +14,12 @@ public class PaperLogger implements Logger {
     }
 
     @Override
-    public void info(final String message) {
-        consoleCommandSender.sendMessage(legacySerialize.serialize(message));
+    public void info(final Component component) {
+        consoleCommandSender.sendMessage(component);
     }
 
     @Override
-    public void error(final String message) {
-
+    public void info(final String message) {
+        consoleCommandSender.sendMessage(Main.getLegacySerialize().serialize(message));
     }
 }

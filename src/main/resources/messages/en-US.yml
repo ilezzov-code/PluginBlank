@@ -1,13 +1,27 @@
-#The plugin prefix. Use {P} in messages
-prefix: "&6PluginBlank &8| "
+#The plugin supports all types of message formatting.
+# LEGACY — Color through & / § and HEX through &#rrggbb / §#rrggbb or &x&r&r&g&g&b&b / §x§r§r§g§g§b§b
+# LEGACY_ADVANCED — Color and HEX through &##rrggbb / §##rrggbb
+# MINI_MESSAGE — Color through <цвет> More detailed — https://docs.advntr.dev/minimessage/index.html
+# And all the formats available on https://www.birdflop.com/resources/rgb/
+# Вы можете использовать все форматы одновременно в одном сообщении. Плагин это поддерживает
+# You can use all formats simultaneously in one message. The plugin supports this
 
-plugin-messages:
-  plugin-enable: "{P} &aПThe plugin is enabled \nVersion: {VERSION} \nDeveloper: {DEVELOPER}"
-  no-perms: "{P} &You don't have permissions to use this command O_o"
-  no-console: "{P} &cThis command is only for players"
+#The prefix plugin. Use {P} in messages
+prefix: "&6PluginBlank &8|"
 
-event-messages:
-  player-join: "{P} &7Welcome, &6{NAME}!"
+plugin_messages:
+  enable: "{P} &7The plugin is &aenabled! \n{P} \n&7Version: &6{VERSION} \n{P} &7Developer: &e{DEVELOPER}"
+  disable: "{P} &7The plugin is &cdisabled!"
+  reload: "{P} &7The plugin has been &areloaded"
+  no_perms: "{P} &cYou don't has permission to use this command O_o"
+  no_console: "{P} &cThis command is only players!"
+  has_error_enable: "{P} &7An error occurred when enabling the plugin: &c{ERROR}"
+  has_error_reload: "{P} &7An error occurred when reloading the plugin: &c{ERROR}"
+  latest_version: "{P} &7You use &alatest &7plugin version"
+  outdated_version: "{P} &7You use outdated plugin version: &c{OUTDATED_VERS} \n&7Developer recommended download latest plugin version: &6{LATEST_VERS} \n&7Download: <click:open_url:{DOWNLOAD_LINK}>&e{DOWNLOAD_LINK}"
 
-command-messages:
-  main-command: "{P} &7Help with the plugin commands: \n &e/plugin-blank &7— send this message \n\Developer: {DEVELOPER} \Contact: {CONTACT_LINK}"
+event_messages:
+  player_join: "{P} &7Welcome, &6{NAME}!"
+
+command_messages:
+  main_command: "{P} &7Help with the plugin commands: \n\n&e/plugin-blank &7— send this message \n&e/plugin-blank reload&7— reload the plugin \n\n&7Developer: &6{DEVELOPER} \n&7Contact: <click:open_url:{CONTACT_LINK}>&e{CONTACT_LINK}"

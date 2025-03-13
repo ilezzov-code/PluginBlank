@@ -11,4 +11,8 @@
 
 #Supporting messages languages: Russian (ru-RU), English (en-US)
 #Доступные языки сообщений: Русский (ru-RU), Английский (en-US)
-language: "ru-RU"
+language: "en-US"
+
+#Check the plugin for updates
+#Проверять плагин на наличие обновлений
+check_updates: true

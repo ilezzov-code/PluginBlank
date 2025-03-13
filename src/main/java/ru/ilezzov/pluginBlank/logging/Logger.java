@@ -1,7 +1,8 @@
 package ru.ilezzov.pluginBlank.logging;
 
-public interface Logger {
-    void info(final String message);
+import net.kyori.adventure.text.Component;
 
-    void error(final String message);
+public interface Logger {
+    void info(final Component component);
+    void info(final String message);
 }
