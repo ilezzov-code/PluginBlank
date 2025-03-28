@@ -1,9 +1,10 @@
-package ru.ilezzov.pluginBlank.manager;
+package ru.ilezzov.pluginblank.managers;
 
 import lombok.Getter;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -21,7 +22,7 @@ public class VersionManager {
     }
 
     public boolean check() throws URISyntaxException, IOException, InterruptedException {
-        return localPluginVersion.equalsIgnoreCase(this.currentPluginVersion);
+        return equalsVersion(currentPluginVersion, this.localPluginVersion) != 1;
     }
 
     private String getCurrentPluginVersionFromGitHub() throws URISyntaxException, IOException, InterruptedException {
@@ -34,9 +35,31 @@ public class VersionManager {
                 .build();
 
         final HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        httpClient.close();
+        //httpClient.close();
 
         return httpResponse.body();
+    }
+
+    private int equalsVersion(final String version1, final String version2) {
+        final String[] version1Split = version1.split("\\.");
+        final String[] version2Split = version2.split("\\.");
+
+        final int maxLength = Math.max(version1Split.length, version2Split.length);
+
+        for (int i = 0; i < maxLength; i++) {
+            final int num1 = i < version1Split.length ? Integer.parseInt(version1Split[i]) : 0;
+            final int num2 = i < version2Split.length ? Integer.parseInt(version2Split[i]) : 0;
+
+            if (num1 < num2) {
+                return -1; // version1 < version2
+            }
+
+            if (num1 > num2) {
+                return 1; // version1 > version2
+            }
+        }
+
+        return 0; // version1 == version2
     }
 
 }

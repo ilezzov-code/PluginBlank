@@ -1,14 +1,15 @@
-name: PluginBlank
-version: '1.0'
-main: ru.ilezzov.pluginBlank.Main
-api-version: '1.21'
-prefix: PluginBlank
-load: STARTUP
+name: ${project.name}
+version: ${project.version}
+main: ru.ilezzov.pluginblank.Main
+api-version: '1.18'
+prefix: ${project.name}
 authors: [ ILeZzoV ]
-description: The PluginBlank for your Minecraft Plugin
+description: The Blank for your Paper plugin
 website: https://t.me/ilezzov
 commands:
   plugin-blank:
-    description: The main command
-    aliases: [ pb ]
-    usage: /plugin-blank
+    description: The main plugin command
+    aliases:
+      - pb
+      - pluginblank
+    usage: /pluginblank

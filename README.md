@@ -2,176 +2,202 @@
     <img src="img/logo/pluginblank.png">
 </div>
 
------
 <div align="center">
-    <h1>Blank for your Paper Minecraft</h1>
+    <h1>Заготовка для вашего Paper плагина</h1>
 </div>
 
-<div align="center">
-    <a href="https://t.me/ilezovofficial">
-    <img src="img/socials/contact_with_me.png" width="200"> 
-    </a>
-</div>
-<div align="center">
-    <a href="https://t.me/ilezzov">
-    <img src="img/socials/tg_channel.png" width="200"> 
-    </a>
-</div>
+## <img src="img/flags/ru.svg" width="15"> [Перейти на русский язык](readmes/README_RU.md)
 
-### Select language:
-* <img src="img/flags/ru.svg" width="15"> Русский
-* <img src="img/flags/en.svg" width="15"> English
+## 💼 Project info
+* Java 17
+* Paper 1.18.2
+* Lombok 1.18.30
+* H2 Database 2.3.232
 
-### Donation: 
-* DA: https://www.donationalerts.com/r/ilezzov_dev
-* Gift in Telegram: https://t.me/ilezovofficial
-
-## 🔥 Features:
-
-* File System
-* Version Checker
-* Legacy formating
-* Multilingualism
+## 🔥 Features
+* Legacy Serialize
+* Permissions System
 * Placeholder System
+* H2 Database
+* Cooldown Manager
+* Version Manager
+* File version manager
 
-## Get started
-Сlone my project using Git or download it from my GitHub
+## Legacy Serialize
+`LegacySerialize` — класс, который включает в себя один статический метод `serialize(String message)` С его помощью Вы можете с легкостью преобразовать любое сообщение в `Component`. Поддерживаемые виды форматирования:
 
-## File System
+* LEGACY — Цвет через & / § и HEX через &#rrggbb / §#rrggbb или &x&r&r&g&g&b&b / §x§r§r§g§g§b§b
+* LEGACY_ADVANCED — Цвет и HEX через &##rrggbb / §##rrggbb
+* MINI_MESSAGE — Цвет через <цвет> Подробнее — https://docs.advntr.dev/minimessage/index.html
+* И все форматы доступные на https://www.birdflop.com/resources/rgb/
+* Вы можете использовать все форматы одновременно в одном сообщении.
 
-The `File System` makes it easier to work with a configuration file (.yml). Now you can easily create an unlimited number of files, as well as edit them without restarting the server.
-
-### Create a file
-First, you need to create a file in the `resources` folder and enter all the necessary values. After that, you can go to create:
-```java
-final PluginFile file = FileManager.new(fileName, filePath);
-```
-
-`fileName` is the name of the file in the `resources` folder.
-
-`filePath` is the folder where the file will be created. If you specify "", the file will be created in the root folder of your plugin.
-
-
-The `new` method will create a file and copy its contents from the `resources` folder
-
-#### Пример:
+Использование:
 
 ```java
-final PluginFile file = new FileManager("config.yml", "");
-```
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import ru.ilezzov.pluginblank.utils.LegacySerialize;
 
-The file `config.yml` will be created in your plugin folder: `plugins/yourPlugin/config.yml`
+public static void main(String[] args) {
+    final String MESSAGE_TEMPLATE = "&6Hello! &#084CFBT&#1559FBh&#2166FBi&#2E73FBs &#478CFCi&#5499FCs &#6EB3FCa &#87CCFDt&#94D9FDe&#A0E6FDs&#ADF3FDt §x§F§B§0§8§4§4m§x§F§8§0§A§4§4e§x§F§4§0§D§4§5s§x§F§1§0§F§4§5s§x§E§D§1§1§4§5a§x§E§A§1§4§4§6g§x§E§6§1§6§4§6e <##FB0844>f<##F80A44>o<##F40D45>r <##ED1145>y<##EA1446>o<##E61646>u <#0854FB>I<#0C5AE9>t<#1060D6>'<#1466C4>s <#1D729F>w<#21788D>o<#257E7A>r<#298468>k";
+
+    final Component component = LegacySerialize.serialize(MESSAGE_TEMPLATE); // <#FFAA00>Hello! <#084CFB>T<#1559FB>h<#2166FB>i<#2E73FB>s <#478CFC>i<#5499FC>s <#6EB3FC>a <#87CCFD>t<#94D9FD>e<#A0E6FD>s<#ADF3FD>t <#FB0844>m<#F80A44>e<#F40D45>s<#F10F45>s<#ED1145>a<#EA1446>g<#E61646>e <#FB0844>f<#F80A44>o<#F40D45>r <#ED1145>y<#EA1446>o<#E61646>u <#0854FB>I<#0C5AE9>t<#1060D6>'<#1466C4>s <#1D729F>w<#21788D>o<#257E7A>r<#298468>k
+    Bukkit.broadcast(MESSAGE_TEMPLATE);
+}
+```
+Результат:
+<img src="img/screenshots/test_legacy_serialize.png">
+
+## Permission System
+В плагин встроена система, которая позволит вам проверять есть ли у игрока определенные права. Для это нужно использовать статический метод `PermissionsChecker.hasPermission(CommandSender sender, Permission permission)`
+
+`Permission` — Enum класс, в котором прописаны все права вашего плагина
 
 ```java
-final PluginFile file = new FileManager("ru-RU.yml", "languages/ru");
+package ru.ilezzov.pluginblank.enums;
+
+public enum Permission {
+    MAIN("cool-lobby.*"),
+    NO_COOLDOWN("cool-lobby.no_cooldown"),
+    RELOAD("cool-lobby.reload");
+
+    private final String permission;
+
+    Permission(final String permission) {
+        this.permission = permission;
+    }
+
+    public String getPermission() {
+        return permission;
+    }
+}
+
 ```
 
-The file `ru-RU.yml` will be created in your plugin folder: `plugins/yourPlugin/languages/ru/ru-RU.yml
-
-### Перезагрузка файла
-If the file has been modified, you can upload new content to use it:
+Использование:
 
 ```java
-file.reload();
+import ru.ilezzov.pluginblank.enums.Permission;
+import ru.ilezzov.pluginblank.utils.PermissionsChecker;
+
+@Override
+public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String s, final @NotNull String @NotNull [] args) {
+    if (PermissionsChecker.hasPermission(sender, Permission.RELOAD)) {
+        // TODO: reload plugin
+        return true;
+    }
+    return false;
+}
 ```
-
-### Getting values from a file by key
-You can use one of the six methods to get values from files by their key:
-
-```java
-final PluginFile file = FileManager.new("config.yml", "");
-
-file.getString(key); //Get String
-file.getInt(key); //Get Int
-file.getDouble(key); //Get Double
-file.getObject(key); //Get Object
-file.getList(key); //Get List
-```
-
-#### Example:
-config.yml
-```yml
-prefix: "Plugin Prefix"
-messages:
-  join-message: "Welcome"
-```
-
-```java
-final PluginFile config = FileManager.new("config.yml", "");
-final String prefix = config.getString("prefix");
-final String joinMessage = config.getString("messages.join-message");
-
-out.println(prefix); //Plugin Prefix
-out.println(joinMessage); //Welcome
-```
-
-## Version Checker
-The plugin has a built-in update verification system. If your plugin is getting a new update, the user will receive a corresponding message.
-
-In order for this to work, you need to follow several steps::
-
-1) Create a repository of your project on GitHub or a public file on the Internet
-2) Add the latest version of your plugin to this file.
-3) Copy the link to this file
-4) Change the value of the `urlToFileVersion` variable in the `Main` class
-
-Now, every time you run the plugin, it will compare the current version of the plugin with the one you specified in the link file. If the versions are different, a corresponding message will be displayed.
-
-## Legacy color formating
-The plugin supports all types of message formatting.
-
-`LEGACY` — Color through **& / §** and HEX through**&#rrggbb / §#rrggbb** or **&x&r&r&g&g&b&b / §x§r§r§g§g§b§b**
-
-`LEGACY_ADVANCED` — Color and HEX via **&##rrggbb / §##rrggbb**
-
-`MINI_MESSAGE` — Color via **<color>** Learn more — https://docs.advntr.dev/minimessage/index.html
-
-And all the formats available on https://www.birdflop.com/resources/rgb/
-
-You can use all formats simultaneously in one message. The plugin supports this
-
-### Usage
-Create an object of the class`LegacySerialize`
-
-```java
-final LegacySerialize legacySerialize = new LegacySerialize();
-```
-
-Get the `Component` of your message using the `serialize` method
-
-```java
-final LegacySerialize legacySerialize = new LegacySerialize();
-final Component component = legacySerialize.serialize(message);
-```
-
-Use the resulting component for its intended purpose
-
-## Multilingualism
-The plugin has built-in multilingualism. You can easily create translations of your plugin.
 
 ## Placeholder System
-The plugin has a built-in Placeholders system, with which you can easily change your placeholders to the desired values.
-
-### Usage
-Create or receive a placeholder string:
+В плагин встроена система удобной работы с вашими плейсхолдерами. Для начала вам необходимо создать объект класса `PluginPlaceholder`
 
 ```java
-final String message = "{P}, welcome to the server";
+import ru.ilezzov.pluginblank.models.PluginPlaceholder;
+
+PluginPlaceholder pluginPlaceholder = new PluginPlaceholder();
 ```
 
-Create `HashMap` with your placeholder:
+Теперь вам необходимо добавить плейсхолдеры, которые будут использоваться в следующем сообщении:
 
 ```java
-final HashMap<String, String> placeholders = new HashMap<>();
-placeholders.put("{P}", player.getName());
+pluginPlaceholder.addPlaceholder(String key, String value);
 ```
 
-Convert your string using the static method `Placeholder.replacePlaceholder()`
+`key` — ваш плейсхолдер  
+`value` — значение, которое будет вместо плейсхолдера
+
+После этого Вы можете заменить ваши плейсхолдеры на значения с помощью статического метода `PlaceholderReplacer.replacePlaceholder(String message, PluginPlaceholder placeholders)`
+
+Использование:
 
 ```java
-final String newMessage = Placeholder.replacePlaceholder(message, placeholders); //Player name, welcome to the server
+import org.bukkit.entity.Player;
+import ru.ilezzov.pluginblank.models.PluginPlaceholder;
+import ru.ilezzov.pluginblank.utils.PlaceholderReplacer;
+
+public static void main(String[] args) {
+    final String MESSAGE_TEMPLATE = "Hello, {NAME}! Time in miles: {TIME}";
+    final Player player; // Nick = ILeZzoV
+    final PluginPlaceholder pluginPlaceholder = new PluginPlaceholder();
+
+    pluginPlaceholder.addPlaceholder("{NAME}", player.getName());
+    pluginPlaceholder.addPlaceholder("{TIME}", System.currentTimeMillis());
+
+    player.sendMessage(PlaceholderReplacer.replacePlaceholder(MESSAGE_TEMPLATE, pluginPlaceholder));
+}
 ```
 
+Результат:
+
+<img src="img/screenshots/test_placeholder_replacer.png">
+
+## Cooldown Manager
+Вы с легкостью можете создавать задержки на использование каких-либо функций вашего плагина при помощи класса `CooldownManager`
+
+Для начала необходимо создать объект класса:
+
+```java
+import ru.ilezzov.pluginblank.managers.CooldownManager;
+
+CooldownManager cooldownManager = new CooldownManager(timeInSecond);
+```
+
+`timeInSecond` — время задержки
+
+Чтобы добавить игроку задержку, нужно использовать метод `newCooldown(UUID playerUUID)`
+
+```java
+import org.bukkit.entity.Player;
+
+Player player;
+cooldownManager.newCooldown(player.getUniqueId());
+```
+
+Чтобы проверить прошла ли зажержка, используйте метод `checkCooldown(UUID playerUUID)`
+
+```java
+import org.bukkit.entity.Player;
+
+Player player;
+cooldownManager.checkCooldown(player.getUniqueId());
+```
+
+Чтобы получить время в секундах, которое необходимо еще подождать, используйте метод `getCooldownTime(UUID playerUUID)`
+
+```java
+import org.bukkit.entity.Player;
+
+Player player;
+cooldownManager.getCooldownTime(player.getUniqueId());
+```
+
+Пример использования:
+
+```java
+import org.bukkit.entity.Player;
+import ru.ilezzov.pluginblank.managers.CooldownManager;
+
+private final CooldownManager cooldownManager = new CooldownManager(10);
+
+@Override
+
+public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String s, final @NotNull String @NotNull [] args) {
+    final Player player = (Player) sender;
+    
+    if (!cooldownManager.checkCooldown(player.getUniqueId())) {
+        return false;
+    }
+    
+    cooldownManager.newCooldown(player.getUniqueId());
+    return true;
+}
+```
+
+## Version Manager
+В проект встроена проверка версии плагина с помощью запроса к текстовому документу. Для корректной работы измените ссылку на вашу в `plugin-settings.yml` 
 
 
 
