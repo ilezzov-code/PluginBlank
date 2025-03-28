@@ -199,5 +199,11 @@ public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Com
 ## Version Manager
 В проект встроена проверка версии плагина с помощью запроса к текстовому документу. Для корректной работы измените ссылку на вашу в `plugin-settings.yml` 
 
-
+## Поддержать разработчика:
+* DA: https://www.donationalerts.com/r/ilezzov_dev
+* YooMoney: https://yoomoney.ru/fundraise/193CD8F13OH.250319
+* Telegram Gift: https://t.me/ilezovofficial 
+* TON: UQCInXoHOJAlMpZ-8GIHqv1k0dg2E4pglKAIxOf3ia5xHmKV
+* BTC: 1KCM1QN9TNYRevvQD63UF81oBRSK67vCon
+* Card: 5536914188326494
 
