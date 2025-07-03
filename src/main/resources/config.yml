@@ -31,4 +31,4 @@ language: "en-US"
 check_updates: true
 
 # Don't edit this / Не редактируйте это
-config_version: 1.0
+config_version: 1.2

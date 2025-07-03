@@ -27,4 +27,4 @@ Messages:
     &7Связаться: <click:open_url:{CONTACT_LINK}>&e{CONTACT_LINK}"
 
 # Не редактируйте это
-config_version: 1.0
+config_version: 1.2
