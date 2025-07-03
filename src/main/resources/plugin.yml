@@ -1,15 +1,13 @@
 name: ${project.name}
+description: Blank for your plugin
 version: ${project.version}
 main: ru.ilezzov.pluginblank.Main
 api-version: '1.18'
-prefix: ${project.name}
+prefix: PluginBlank
+load: STARTUP
 authors: [ ILeZzoV ]
-description: The Blank for your Paper plugin
-website: https://t.me/ilezzov
+website: https://t.me/ilezovofficial
 commands:
-  plugin-blank:
-    description: The main plugin command
-    aliases:
-      - pb
-      - pluginblank
+  pluginblank:
+    aliases: [ pb ]
     usage: /pluginblank

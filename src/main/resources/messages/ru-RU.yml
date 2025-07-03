@@ -6,31 +6,28 @@
 # Вы можете использовать все форматы одновременно в одном сообщении. Плагин это поддерживает
 
 Plugin:
-  plugin-prefix: "&6PluginBlank &8|" #Префикс плагина. Используйте {P} в сообщениях
+  plugin-prefix: "&6CoolLobby &8|" # Префикс плагина. Используйте {P} в сообщениях
   plugin-reload: "{P} &7Плагин успешно &aперезагружен"
   plugin-has-error-reload: "{P} &7Возникла ошибка при перезагрузке плагина: &c{ERROR}"
-  plugin-use-latest-version: "{P} &7Вы используете &aпоследнюю &7версию плагина"
+  plugin-use-latest-version: "{P} &7Вы используете &aпоследнюю &7версию плагина: &6{LATEST_VERS}"
   plugin-use-outdated-version: "{P} &7Вы используете устаревшую версию: &c{OUTDATED_VERS} \n&7Рекомендуем установить последнюю версию плагина: &6{LATEST_VERS} \n&7Скачать: <click:open_url:{DOWNLOAD_LINK}>&e{DOWNLOAD_LINK}"
+  plugin-has-error: "{P} &7Возникла ошибка при выполнении команды O_o → &c{ERROR}"
+  plugin-has-error-check-version: "{P} &7Не удалось получить последнюю версию плагина. Проверьте подключение к интернету"
 
 Messages:
   command-permission-error: "{P} &cУ вас нет прав для выполнения этой команды O_o"
   command-no-console-error: "{P} &cЭта команда доступна только для игроков!"
   command-cooldown: "{P} &7Подождите еще &6{TIME} &7сек. перед выполнением этой команды"
   command-disable: "{P} &7Эта команда отключена администратором сервера"
-  command-only-lobby-use: "{P} &7Эта команда доступна только в &6{WORLD}"
 
   command-main-message: "{P} &7Помощь по командам плагина: \n\n
-    &e/plugin-blank &7— отправить это сообщение \n
-    &e/plugin-blank reload&7— перезагрузить плагин \n\n
-  &7Разработчик: &6{DEVELOPER} \n
-  &7Связаться: <click:open_url:{CONTACT_LINK}>&e{CONTACT_LINK}"
-
-  player-join-message: "{P} &7Добро пожаловать, &6{NAME}!"
-  player-join-global-message: "{P} &6{NAME}&7, залетел к нам на сервер"
-
-Title:
-  player-join-title: "&6&lДобро пожаловать на сервер!"
-  player-join-subtitle: "&7Вайп на &cAnarchy &7и &cGrief"
+      &e/nc &7— отправить это сообщение \n
+      &e/nc set <name> &7— установить имя \n
+      &e/nc clear &7— очистить имя \n 
+      &e/nc version &7— узнать актуальную версию плагина \n
+      &e/nc reload &7— перезагрузить плагин \n\n
+    &7Разработчик: &6{DEVELOPER} \n
+    &7Связаться: <click:open_url:{CONTACT_LINK}>&e{CONTACT_LINK}"
 
 # Не редактируйте это
 config_version: 1.0

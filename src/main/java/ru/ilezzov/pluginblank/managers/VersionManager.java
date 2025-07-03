@@ -27,7 +27,6 @@ public class VersionManager {
 
     private String getCurrentPluginVersionFromGitHub() throws URISyntaxException, IOException, InterruptedException {
         final HttpClient httpClient = HttpClient.newHttpClient();
-
         assert this.urlToFileVersion != null;
 
         final HttpRequest httpRequest = HttpRequest.newBuilder(new URI(this.urlToFileVersion))
@@ -35,7 +34,6 @@ public class VersionManager {
                 .build();
 
         final HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        //httpClient.close();
 
         return httpResponse.body();
     }
@@ -46,20 +44,24 @@ public class VersionManager {
 
         final int maxLength = Math.max(version1Split.length, version2Split.length);
 
-        for (int i = 0; i < maxLength; i++) {
-            final int num1 = i < version1Split.length ? Integer.parseInt(version1Split[i]) : 0;
-            final int num2 = i < version2Split.length ? Integer.parseInt(version2Split[i]) : 0;
+        try {
+            for (int i = 0; i < maxLength; i++) {
+                final int num1 = i < version1Split.length ? Integer.parseInt(version1Split[i]) : 0;
+                final int num2 = i < version2Split.length ? Integer.parseInt(version2Split[i]) : 0;
 
-            if (num1 < num2) {
-                return -1; // version1 < version2
+                if (num1 < num2) {
+                    return -1; // version1 < version2
+                }
+
+                if (num1 > num2) {
+                    return 1; // version1 > version2
+                }
             }
 
-            if (num1 > num2) {
-                return 1; // version1 > version2
-            }
+            return 0; // version1 == version2
+        } catch (NumberFormatException e) {
+            return -2;
         }
-
-        return 0; // version1 == version2
     }
 
 }

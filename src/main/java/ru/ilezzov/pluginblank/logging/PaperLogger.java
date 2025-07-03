@@ -29,4 +29,14 @@ public class PaperLogger implements Logger {
             logger.info(component);
         }
     }
+
+    @Override
+    public void error(final String message) {
+        logger.error(Component.text(message));
+    }
+
+    @Override
+    public void error(final Component component) {
+        logger.error(component);
+    }
 }

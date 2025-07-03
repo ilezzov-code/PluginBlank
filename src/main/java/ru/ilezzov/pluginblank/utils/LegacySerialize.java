@@ -22,6 +22,8 @@ public class LegacySerialize {
             Map.entry("§m", "st"), Map.entry("§n", "u"), Map.entry("§o", "i"), Map.entry("§r", "reset")
     );
 
+    private static final char ALTERNATIVE_CODE = '&';
+
     public static Component serialize(final String message) {
         if (message == null) {
             return Component.empty();
@@ -37,7 +39,7 @@ public class LegacySerialize {
     }
 
     private static String legacySerialize(final String message) {
-        String serializeMessage = translateAlternateCodeColor('&', message);
+        String serializeMessage = translateAlternateCodeColor(ALTERNATIVE_CODE, message);
 
         serializeMessage = replaceLegacyParagraphHex(serializeMessage);
         serializeMessage = replaceLegacyAdvancedColor(serializeMessage);
