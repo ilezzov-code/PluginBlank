@@ -1,5 +1,5 @@
 Urls:
-  url-to-file-version: "https://raw.githubusercontent.com/ilezzov-code/${project.version}/main/VERSION"
+  url-to-file-version: "https://raw.githubusercontent.com/ilezzov-code/${project.name}/main/VERSION"
   url-to-download-latest-version: "https://github.com/ilezzov-code/${project.name}/releases"
 
 Bstats:

@@ -208,7 +208,15 @@ public final class Main extends JavaPlugin {
 
     public static void reloadFiles() {
         configFile.reload();
-        messagesFile.reload();
+
+        final String messageLanguage = configFile.getString("language");
+
+        if (!messageLanguage.equals(getMessageLanguage())) {
+            messagesFile = new PluginFile(Main.getInstance(), "messages/".concat(messageLanguage).concat(".yml"));
+        } else {
+            messagesFile.reload();
+        }
+
         databaseFile.reload();
     }
 

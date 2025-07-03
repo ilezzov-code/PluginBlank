@@ -6,7 +6,7 @@
 # You can use all formats simultaneously in one message. The plugin supports this.
 
 Plugin:
-  plugin-prefix: "&6CoolLobby &8|" # Plugin prefix. Use {P} in messages
+  plugin-prefix: "&6PluginBlank &8|" # Plugin prefix. Use {P} in messages
   plugin-reload: "{P} &7Plugin successfully &areloaded"
   plugin-has-error-reload: "{P} &7An error occurred while reloading the plugin: &c{ERROR}"
   plugin-use-latest-version: "{P} &7You are using the &alatest &7version of the plugin: &6{LATEST_VERS}"
@@ -21,21 +21,10 @@ Messages:
   command-disable: "{P} &7This command is disabled by the server administrator"
 
   command-main-message: "{P} &7Help for plugin commands: \n\n
-      &e/nc &7— send this message \n
-      &e/nc set <name> &7— set a name \n
-      &e/nc clear &7— clear the name \n 
-      &e/nc version &7— check the current plugin version \n
-      &e/nc reload &7— reload the plugin \n\n
+      &e/pb version &7— check the current plugin version \n
+      &e/pb reload &7— reload the plugin \n\n
     &7Developer: &6{DEVELOPER} \n
     &7Contact: <click:open_url:{CONTACT_LINK}>&e{CONTACT_LINK}"
-
-  command-name-set: "{P} &7You have successfully set the name &6{NAME} &r&7 on block &6{BLOCK}"
-  command-name-clear: "{P} &7You have successfully cleared the name of block &6{BLOCK}"
-  command-name-empty: "{P} &7The name cannot be empty"
-  command-name-max-length: "{P} &7The name must not exceed &6{MAX_LENGTH} &7characters"
-  command-name-block-null: "{P} &7The block cannot be air"
-  command-name-block-error: "{P} &7Unable to set name on this block O_o"
-  command-name-use-anvil-error: "{P} &7You cannot rename this block using an anvil"
 
 # Do not edit this
 config_version: 1.2
