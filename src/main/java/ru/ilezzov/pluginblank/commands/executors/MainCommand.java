@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.ilezzov.pluginblank.Main;
 import ru.ilezzov.pluginblank.commands.CommandManager;
-import ru.ilezzov.pluginblank.managers.VersionManager;
+import ru.ilezzov.pluginblank.version.VersionManager;
 import ru.ilezzov.pluginblank.messages.ConsoleMessages;
 import ru.ilezzov.pluginblank.messages.PluginMessages;
 import ru.ilezzov.pluginblank.permission.Permission;
@@ -102,7 +102,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        commandPlaceholders.addPlaceholder("{LATEST_VERS}", versionManager.getCurrentPluginVersion());
+        commandPlaceholders.addPlaceholder("{LATEST_VERS}", versionManager.getCurrentVersion());
 
         if (isOutdatedVersion()) {
             commandPlaceholders.addPlaceholder("{DOWNLOAD_LINK}", getPluginSettings().getUrlToDownloadLatestVersion());

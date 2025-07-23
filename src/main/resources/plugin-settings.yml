@@ -1,5 +1,5 @@
 Urls:
-  url-to-file-version: "https://raw.githubusercontent.com/ilezzov-code/${project.name}/main/VERSION"
+  url-to-file-version: "https://raw.githubusercontent.com/ilezzov-code/${project.name}/main/VERSION.json"
   url-to-download-latest-version: "https://github.com/ilezzov-code/${project.name}/releases"
 
 Bstats:
@@ -12,6 +12,7 @@ Messages:
 
   legacy-plugin-version: "You use &coutdated &rplugin version: &6%s&r. \nPlease, download latest plugin version: &6%s&r. \nDownload — &6%s"
   latest-plugin-version: "You use &alatest &rplugin version: &6%s"
+  version-not-supported: "You use &cnot supported &rplugin version: &6%s&r. \nPlease, download latest plugin version: &6%s&r. \nDownload — &6%s"
 
   error-occurred: "An error occurred: &c%s"
 

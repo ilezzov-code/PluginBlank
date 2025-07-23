@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import ru.ilezzov.pluginblank.managers.VersionManager;
+import ru.ilezzov.pluginblank.version.VersionManager;
 import ru.ilezzov.pluginblank.permission.PermissionsChecker;
 import ru.ilezzov.pluginblank.placeholder.PluginPlaceholder;
 
@@ -40,7 +40,7 @@ public class VersionCheckEvent implements Listener {
         }
 
         eventPlaceholders.addPlaceholder("{OUTDATED_VERS}", getPluginVersion());
-        eventPlaceholders.addPlaceholder("{LATEST_VERS}", versionManager.getCurrentPluginVersion());
+        eventPlaceholders.addPlaceholder("{LATEST_VERS}", versionManager.getCurrentVersion());
         eventPlaceholders.addPlaceholder("{DOWNLOAD_LINK}", getPluginSettings().getUrlToDownloadLatestVersion());
 
         player.sendMessage(pluginUseOutdatedVersionMessage(eventPlaceholders));

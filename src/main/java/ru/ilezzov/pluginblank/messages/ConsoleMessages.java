@@ -30,6 +30,10 @@ public class ConsoleMessages {
         return getComponent(Objects.requireNonNull(messages.getString("latest-plugin-version")), pluginVersion);
     }
 
+    public static Component versionNotSupported(final String outdatedVersion, final String latestVersion, final String downloadLink) {
+        return getComponent(Objects.requireNonNull(messages.getString("version-not-supported")), outdatedVersion, latestVersion, downloadLink);
+    }
+
     public static Component errorOccurred(final String errorMessage) {
         return getComponent(Objects.requireNonNull(messages.getString("error-occurred")), errorMessage);
     }

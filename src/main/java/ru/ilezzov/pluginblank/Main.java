@@ -1,6 +1,7 @@
 package ru.ilezzov.pluginblank;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.ilezzov.pluginblank.database.DatabaseType;
@@ -12,7 +13,7 @@ import ru.ilezzov.pluginblank.events.EventManager;
 import ru.ilezzov.pluginblank.file.PluginFile;
 import ru.ilezzov.pluginblank.logging.Logger;
 import ru.ilezzov.pluginblank.logging.PaperLogger;
-import ru.ilezzov.pluginblank.managers.VersionManager;
+import ru.ilezzov.pluginblank.version.VersionManager;
 import ru.ilezzov.pluginblank.messages.ConsoleMessages;
 import ru.ilezzov.pluginblank.settings.PluginSettings;
 import ru.ilezzov.pluginblank.stats.PluginStats;
@@ -129,22 +130,27 @@ public final class Main extends JavaPlugin {
         }
     }
 
+    public static void disablePlugin() {
+        Bukkit.getPluginManager().disablePlugin(Main.getInstance());
+    }
+
     public static void checkPluginVersion() {
         if (configFile.getBoolean("check_updates")) {
-            try {
-                versionManager = new VersionManager(pluginVersion, pluginSettings.getUrlToFileVersion());
+            versionManager = new VersionManager(pluginVersion, pluginSettings.getUrlToFileVersion());
 
-                if (versionManager.check()) {
+            switch (versionManager.check()) {
+                case LATEST -> {
                     pluginLogger.info(latestPluginVersion(pluginVersion));
                     outdatedVersion = false;
-                } else {
-                    pluginLogger.info(legacyPluginVersion(pluginVersion, versionManager.getCurrentPluginVersion(), pluginSettings.getUrlToDownloadLatestVersion()));
+                }
+                case SUPPORTING -> {
+                    pluginLogger.info(legacyPluginVersion(pluginVersion, versionManager.getCurrentVersion(), versionManager.getCurrentVersionUrl()));
                     outdatedVersion = true;
                 }
-            } catch (URISyntaxException e) {
-                pluginLogger.info(errorOccurred("Invalid link to the GitHub file. link = ".concat(versionManager.getUrlToFileVersion())));
-            } catch (IOException | InterruptedException e ) {
-                pluginLogger.info(errorOccurred("Couldn't send a request to get the plugin version"));
+                case NOT_SUPPORTED -> {
+                    pluginLogger.info(versionNotSupported(pluginVersion, versionManager.getCurrentVersion(), versionManager.getCurrentVersionUrl()));
+                    disablePlugin();
+                }
             }
         }
     }
