@@ -1,0 +1,24 @@
+{
+  "latest": {
+    "version": "1.0.0",
+    "release_date": "2026-01-01",
+    "download_url": "https://github.com/ilezzov-code/NamedChest/releases/tag/1.0.0",
+    "changes": [
+      "The first version"
+    ]
+  },
+  "compatibility": {
+    "min_required_version": "1.0.0",
+    "blacklisted_versions": [
+      "1.0.0-SNAPSHOT"
+    ]
+  },
+  "history": [
+    {
+      "version": "1.0.0",
+      "changes": [
+        "The first version"
+      ]
+    }
+  ]
+}
