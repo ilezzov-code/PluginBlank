@@ -1,0 +1,15 @@
+name: $name
+description: $description
+prefix: $prefix
+version: '${version}'
+
+main: ru.ilezzov.pluginBlank.Main
+api-version: '1.18'
+load: STARTUP
+
+authors: $authors
+website: $website
+commands:
+  $command:
+    aliases: [pb, pluginblank]
+    description: The main command
