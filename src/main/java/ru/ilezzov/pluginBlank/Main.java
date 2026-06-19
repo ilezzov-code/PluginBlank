@@ -1,6 +1,7 @@
 package ru.ilezzov.pluginBlank;
 
 import lombok.Getter;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.ilezzov.pluginBlank.logger.PluginLogger;
@@ -21,6 +22,7 @@ public final class Main extends JavaPlugin {
     @Getter
     private static PluginProperties properties;
 
+    private static Metrics metrics;
 
     @Override
     public void onEnable() {
@@ -93,6 +95,8 @@ public final class Main extends JavaPlugin {
                 logger.error(VERSION_DATA_NOT_LOADED.formatted(versionDataResponse.message()));
             }
         }
+
+        metrics = new Metrics(this, properties.bstats());
     }
 
     @Override

@@ -1,6 +1,9 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id("java-library")
     id("xyz.jpenilla.run-paper") version "3.0.2"
+    id("com.gradleup.shadow") version "9.3.1"
 }
 
 repositories {
@@ -9,6 +12,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.bstats:bstats-bukkit:3.2.1")
+
     compileOnly("org.projectlombok:lombok:1.18.46")
     annotationProcessor("org.projectlombok:lombok:1.18.46")
 
@@ -20,13 +25,23 @@ java {
 }
 
 val copyJar by tasks.registering(Copy::class) {
-    from(tasks.named<Jar>("jar").get().archiveFile)
+    from(tasks.named<ShadowJar>("shadowJar").get().archiveFile)
     into(file("D:/ILeZzoV Server/plugins"))
     outputs.upToDateWhen { false }
 }
 
-tasks.named<Jar>("jar") {
+tasks.named<ShadowJar>("shadowJar") {
     finalizedBy(copyJar)
+}
+
+tasks.shadowJar {
+    configurations = project.configurations.runtimeClasspath.map { setOf(it) }
+
+    dependencies {
+        exclude { it.moduleGroup != "org.bstats" }
+    }
+
+    relocate("org.bstats", "${project.group}.stats")
 }
 
 tasks {
