@@ -10,7 +10,7 @@
   "compatibility": {
     "min_required_version": "1.0.0",
     "blacklisted_versions": [
-      "1.0.0"
+      "1.0.0-SHANPSHOT"
     ]
   },
   "history": [
