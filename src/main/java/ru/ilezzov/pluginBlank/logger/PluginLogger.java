@@ -1,5 +1,6 @@
 package ru.ilezzov.pluginBlank.logger;
 
+import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -11,12 +12,17 @@ import java.util.logging.Level;
 public class PluginLogger {
     private final Plugin plugin;
     private final String prefix;
+    private final String debugPrefix;
     private final ConsoleCommandSender console;
     private final MiniMessage mm = MiniMessage.miniMessage();
+
+    @Setter
+    private boolean debug = false;
 
     public PluginLogger(final Plugin plugin, final String pluginName) {
         this.plugin = plugin;
         this.prefix = "<gold>" + pluginName + "</gold> <dark_gray>| ";
+        this.debugPrefix = "<gold>" + pluginName + "</gold> <aqua>DEBUG</aqua> <dark_gray>| ";
         this.console = Bukkit.getConsoleSender();
     }
 
@@ -27,6 +33,17 @@ public class PluginLogger {
 
     public void info(String message) {
         send("<white>" + message + "</white>");
+    }
+
+    public void info(Component component) {
+        this.console.sendMessage(component);
+    }
+
+    public void debug(String message) {
+        if (debug) {
+            final Component component = mm.deserialize(debugPrefix + "<white>" + message + "</white>");
+            console.sendMessage(component);
+        }
     }
 
     public void success(String message) {

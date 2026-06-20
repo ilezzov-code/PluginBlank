@@ -9,10 +9,14 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.okaeri.cloud/releases")
 }
 
 dependencies {
     implementation("org.bstats:bstats-bukkit:3.2.1")
+
+    implementation("eu.okaeri:okaeri-configs-yaml-bukkit:6.1.0-beta.4")
+    implementation("eu.okaeri:okaeri-configs-serdes-bukkit:6.1.0-beta.4")
 
     compileOnly("org.projectlombok:lombok:1.18.46")
     annotationProcessor("org.projectlombok:lombok:1.18.46")
@@ -37,11 +41,8 @@ tasks.named<ShadowJar>("shadowJar") {
 tasks.shadowJar {
     configurations = project.configurations.runtimeClasspath.map { setOf(it) }
 
-    dependencies {
-        exclude { it.moduleGroup != "org.bstats" }
-    }
-
     relocate("org.bstats", "${project.group}.stats")
+    relocate("eu.okaeri", "${project.group}.okaeri")
 }
 
 tasks {
