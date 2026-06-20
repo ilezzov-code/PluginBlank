@@ -2,7 +2,11 @@ package ru.ilezzov.pluginBlank.version;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import lombok.Getter;
+import lombok.Setter;
+import ru.ilezzov.pluginBlank.logger.PluginLogger;
 import ru.ilezzov.pluginBlank.model.Response;
+import ru.ilezzov.pluginBlank.properties.PluginProperties;
 import ru.ilezzov.pluginBlank.utils.Utils;
 
 import java.io.IOException;
@@ -17,7 +21,50 @@ import java.util.List;
 import static ru.ilezzov.pluginBlank.message.ErrorConstants.*;
 
 public class VersionManager {
-    public static Response<VersionData> loadVersionDate(final String versionFileUrl) {
+    private final PluginLogger logger;
+    private final PluginProperties properties;
+
+    @Getter
+    @Setter
+    private VersionData versionData;
+
+    @Getter
+    private VersionType versionType;
+
+    public VersionManager(final PluginLogger pluginLogger, final PluginProperties properties) {
+        this.logger = pluginLogger;
+        this.properties = properties;
+        this.loadVersionData();
+    }
+
+    protected void loadVersionData() {
+        final Response<VersionData> versionDataResponse = loadVersionDate(properties.versionFileUrl());
+
+        if (versionDataResponse.success()) {
+            versionData = versionDataResponse.data();
+
+            final Response<VersionType> versionTypeResponse = this.identifyVersionType(versionData, properties.currentVersion());
+
+            if (versionTypeResponse.success()) {
+                versionType = versionTypeResponse.data();
+                return;
+            } else {
+                logger.error(VERSION_CHECK_FAILED.formatted(versionTypeResponse.error()), versionTypeResponse.error());
+            }
+
+        } else {
+            final Exception e = versionDataResponse.error();
+
+            if (e != null) {
+                logger.error(VERSION_DATA_NOT_LOADED.formatted(versionDataResponse.message()), e);
+            } else {
+                logger.error(VERSION_DATA_NOT_LOADED.formatted(versionDataResponse.message()));
+            }
+        }
+        this.versionType = VersionType.UNREACHABLE;
+    }
+
+    private Response<VersionData> loadVersionDate(final String versionFileUrl) {
         try {
             final URI uri = URI.create(versionFileUrl);
             final URL url = uri.toURL();
@@ -51,7 +98,7 @@ public class VersionManager {
         }
     }
 
-    public static Response<VersionType> getVersionType(final VersionData versionData, final String currentVersion) {
+    private Response<VersionType> identifyVersionType(final VersionData versionData, final String currentVersion) {
         if (versionData == null) {
             return Response.ok(VersionType.UNREACHABLE);
         }
