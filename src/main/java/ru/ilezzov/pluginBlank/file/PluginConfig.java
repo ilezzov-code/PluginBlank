@@ -59,7 +59,7 @@ public class PluginConfig extends OkaeriConfig {
                 "Интервал автоматической проверки обновлений в фоне"
         })
         @CustomKey("check-interval")
-        public Interval checkInterval = new Interval(true, "HOUR", 6);
+        public Interval checkInterval = new Interval(true, "HOURS", 6);
 
         @Comment({
                 "",
