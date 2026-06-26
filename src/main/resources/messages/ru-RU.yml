@@ -18,25 +18,22 @@ plugin:
   no-perms: "{P_E} <red>У вас нет прав на использования этой команды</red>"
   command-disable: "{P_E} <red>Команда отключена администратором сервера</red>"
   cooldown: "{P} <gray>Подождите еще <yellow>{COOLDOWN} сек.</yellow> для использования этой команды"
-  error-occurred: "{P_E} <red> Возникла ошибка. Посмотрите консоль</red>"
 
 version:
-  latest: "{P} Вы используете последнюю версию плагина <green>{CURRENT_VERSION}</green>"
-  supported: |
-    {P} <gray>Вы используете поддерживаемую версию плагина (<yellow>{CURRENT_VERSION}</yellow>), однако рекомендуем обновить ее до последней версии (<green>{LATEST_VERSION}</green>)
-    {P} Скачать — <yellow><click:open_url:{DOWNLOAD_LINK}>click to open</click></yellow>
-
-  outdated: |
-    {P} <gray>Вы используете не поддерживаемую версию плагина (<red>{CURRENT_VERSION}). <bold>НЕ РЕКОМЕНДУЕМ ИСПОЛЬЗОВАТЬ ЭТОТ ПАТЧ.</bold></red> Срочно установите последнюю версию плагина (<green>{LATEST_VERSION}</green>)
-    {P} Скачать — <yellow><click:open_url:{DOWNLOAD_LINK}>click to open</click></yellow>
-
-  blacklist: |
-    {P} <gray>Вы используете заблокированную версию плагина (<red>{CURRENT_VERSION}). <bold>НЕ РЕКОМЕНДУЕМ ИСПОЛЬЗОВАТЬ ЭТОТ ПАТЧ.</bold></red> Срочно установите последнюю версию плагина (<green>{LATEST_VERSION}</green>)
-    {P} Скачать — <yellow><click:open_url:{DOWNLOAD_LINK}>click to open</click></yellow>
+  latest: "{P} <gray>Вы используете последнюю версию плагина <green>{CURRENT_VERSION}</green></gray>"
+  supported: "{P} <gray>Вы используете поддерживаемую версию плагина (<yellow>{CURRENT_VERSION}</yellow>), однако рекомендуем обновить ее до последней версии (<green>{LATEST_VERSION}</green>)"
+  outdated: "{P} <gray>Вы используете не поддерживаемую версию плагина (<red>{CURRENT_VERSION}). <bold>{ACTION}</bold></red> Срочно установите последнюю версию плагина (<green>{LATEST_VERSION}</green>)"
+  blacklist: "{P} <gray>Вы используете заблокированную версию плагина (<red>{CURRENT_VERSION}). <bold>{ACTION}.</bold></red> Срочно установите последнюю версию плагина (<green>{LATEST_VERSION}</green>)"
+  download: "{P} Скачать — <yellow><click:open_url:{DOWNLOAD_LINK}>{DOWNLOAD_LINK}</click></yellow>"
+  error: "{P_E} <red>Возникла ошибка при получении версии плагина. Подробнее в консоли</red>"
+  action:
+    impossible-launch: "ЗАПУСК ПЛАГИНА НЕВОЗМОЖЕН"
+    no-recommended: "НЕ РЕКОМЕНДУЕМ ИСПОЛЬЗОВАТЬ ЭТОТ ПАТЧ"
+    auto-stopping: "АВТОМАТИЧЕСКОЕ ВЫКЛЮЧЕНИЕ ПЛАГИНА"
 
 main-command:
   help: |
     {P} <gray>Помощь по командам плагина: 
-     <yellow>• <click:suggest_command:/$command reload>/$command reload></click></yellow> — перезагрузить плагин
-     <yellow>• <click:suggest_command:/$command version>/$command version></click></yellow> — получить последнюю версию плагина
+     <yellow>• <click:suggest_command:/$command reload>/$command reload</click></yellow> — перезагрузить плагин
+     <yellow>• <click:suggest_command:/$command version>/$command version</click></yellow> — получить последнюю версию плагина
     Написать разработчику — <blue><click:open_url:{CONTACT}>{CONTACT}</click></gray>
