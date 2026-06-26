@@ -1,0 +1,42 @@
+# The plugin supports all types of message formatting.
+# LEGACY — Color via & / § and HEX via &#rrggbb / §#rrggbb or &x&r&r&g&g&b&b / §x§r§r§g§g§b§b
+# LEGACY_ADVANCED — Color and HEX via &##rrggbb / §##rrggbb
+# MINI_MESSAGE — Color via <color> More details — https://docs.advntr.dev/minimessage/index.html
+# And all formats available at https://www.birdflop.com/resources/rgb/
+
+# MINI_MESSAGE (RECOMMENDED) — color via <color> More details — https://docs.advntr.dev/minimessage/index.html
+# ALL — support for all formats simultaneously. Slower, not all MINI_MESSAGE tags are supported
+colorizer: MINI_MESSAGE
+
+plugin:
+  # Plugin prefix for regular messages. Use {P} in messages
+  prefix: "<gold>PluginBlank</gold> <dark_gray>|</dark_gray>"
+  # Plugin prefix for error messages. Use {P_E} in messages
+  prefix-error: "<red>PluginBlank</red> <dark_gray>|</dark_gray>"
+  reload: "{P} <gray>The plugin has been successfully <green>reloaded</gray>"
+  no-console: "{P_E} <red>This command can only be executed by players</red>"
+  no-perms: "{P_E} <red>You do not have permission to use this command</red>"
+  command-disable: "{P_E} <red>This command has been disabled by the server administrator</red>"
+  cooldown: "{P} <gray>Please wait another <yellow>{COOLDOWN}s</yellow> before using this command again"
+  error-occurred: "{P_E} <red>An error occurred. Please check the console</red>"
+
+version:
+  latest: "{P} You are running the latest version of the plugin: <green>{CURRENT_VERSION}</green>"
+  supported: |
+    {P} <gray>You are running a supported version of the plugin (<yellow>{CURRENT_VERSION}</yellow>), but we recommend updating to the latest version (<green>{LATEST_VERSION}</green>)
+    {P} Download here — <yellow><click:open_url:{DOWNLOAD_LINK}>click to open</click></yellow>
+
+  outdated: |
+    {P} <gray>You are running an unsupported version of the plugin (<red>{CURRENT_VERSION}). <bold>WE DO NOT RECOMMEND USING THIS PATCH.</bold></red> Please immediately install the latest version (<green>{LATEST_VERSION}</green>)
+    {P} Download here — <yellow><click:open_url:{DOWNLOAD_LINK}>click to open</click></yellow>
+
+  blacklist: |
+    {P} <gray>You are running a blacklisted version of the plugin (<red>{CURRENT_VERSION}). <bold>WE DO NOT RECOMMEND USING THIS PATCH.</bold></red> Please immediately install the latest version (<green>{LATEST_VERSION}</green>)
+    {P} Download here — <yellow><click:open_url:{DOWNLOAD_LINK}>click to open</click></yellow>
+
+main-command:
+  help: |
+    {P} <gray>Plugin command help: 
+     <yellow>• <click:suggest_command:/$command reload>/$command reload></click></yellow> — reload the plugin
+     <yellow>• <click:suggest_command:/$command version>/$command version></click></yellow> — get the latest plugin version
+    Contact the developer — <blue><click:open_url:{CONTACT}>{CONTACT}</click></gray>

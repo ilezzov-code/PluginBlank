@@ -1,0 +1,11 @@
+name: PluginBlank
+description: $description
+prefix: PB
+version: '${version}'
+
+main: ru.ilezzov.pluginBlank.Main
+api-version: '1.18'
+load: STARTUP
+
+authors: [ ILeZzoV ]
+website: https://t.me/ilezzov_plugins

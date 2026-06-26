@@ -1,0 +1,42 @@
+# Плагин поддерживает все виды форматирования сообщений.
+# LEGACY — Цвет через & / § и HEX через &#rrggbb / §#rrggbb или &x&r&r&g&g&b&b / §x§r§r§g§g§b§b
+# LEGACY_ADVANCED — Цвет и HEX через &##rrggbb / §##rrggbb
+# MINI_MESSAGE — Цвет через <цвет> Подробнее — https://docs.advntr.dev/minimessage/index.html
+# И все форматы доступные на https://www.birdflop.com/resources/rgb/
+
+# MINI_MESSAGE (РЕКОМЕНДУЕТСЯ) — цвет через <цвет> Подробнее — https://docs.advntr.dev/minimessage/index.html
+# ALL — поддержка всех форматов одновременно. Медленнее, поддерживаются не все теги MINI_MESSAGE
+colorizer: MINI_MESSAGE
+
+plugin:
+  # Префикс плагина для обычных сообщений. Используйте {P} в сообщениях
+  prefix: "<gold>PluginBlank</gold> <dark_gray>|</dark_gray>"
+  # Префикс плагина для сообщений об ошибке. Используйте {P_E} в сообщения
+  prefix-error: "<red>PluginBlank</red> <dark_gray>|</dark_gray>"
+  reload: "{P} <gray>Плагин успешно <green>перезагружен</gray>"
+  no-console: "{P_E} <red>Команда доступна только игрокам</red>"
+  no-perms: "{P_E} <red>У вас нет прав на использования этой команды</red>"
+  command-disable: "{P_E} <red>Команда отключена администратором сервера</red>"
+  cooldown: "{P} <gray>Подождите еще <yellow>{COOLDOWN} сек.</yellow> для использования этой команды"
+  error-occurred: "{P_E} <red> Возникла ошибка. Посмотрите консоль</red>"
+
+version:
+  latest: "{P} Вы используете последнюю версию плагина <green>{CURRENT_VERSION}</green>"
+  supported: |
+    {P} <gray>Вы используете поддерживаемую версию плагина (<yellow>{CURRENT_VERSION}</yellow>), однако рекомендуем обновить ее до последней версии (<green>{LATEST_VERSION}</green>)
+    {P} Скачать — <yellow><click:open_url:{DOWNLOAD_LINK}>click to open</click></yellow>
+
+  outdated: |
+    {P} <gray>Вы используете не поддерживаемую версию плагина (<red>{CURRENT_VERSION}). <bold>НЕ РЕКОМЕНДУЕМ ИСПОЛЬЗОВАТЬ ЭТОТ ПАТЧ.</bold></red> Срочно установите последнюю версию плагина (<green>{LATEST_VERSION}</green>)
+    {P} Скачать — <yellow><click:open_url:{DOWNLOAD_LINK}>click to open</click></yellow>
+
+  blacklist: |
+    {P} <gray>Вы используете заблокированную версию плагина (<red>{CURRENT_VERSION}). <bold>НЕ РЕКОМЕНДУЕМ ИСПОЛЬЗОВАТЬ ЭТОТ ПАТЧ.</bold></red> Срочно установите последнюю версию плагина (<green>{LATEST_VERSION}</green>)
+    {P} Скачать — <yellow><click:open_url:{DOWNLOAD_LINK}>click to open</click></yellow>
+
+main-command:
+  help: |
+    {P} <gray>Помощь по командам плагина: 
+     <yellow>• <click:suggest_command:/$command reload>/$command reload></click></yellow> — перезагрузить плагин
+     <yellow>• <click:suggest_command:/$command version>/$command version></click></yellow> — получить последнюю версию плагина
+    Написать разработчику — <blue><click:open_url:{CONTACT}>{CONTACT}</click></gray>
