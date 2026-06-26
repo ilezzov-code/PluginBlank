@@ -26,6 +26,7 @@ version:
   blacklist: "{P} <gray>Вы используете заблокированную версию плагина (<red>{CURRENT_VERSION}). <bold>{ACTION}.</bold></red> Срочно установите последнюю версию плагина (<green>{LATEST_VERSION}</green>)"
   download: "{P} Скачать — <yellow><click:open_url:{DOWNLOAD_LINK}>{DOWNLOAD_LINK}</click></yellow>"
   error: "{P_E} <red>Возникла ошибка при получении версии плагина. Подробнее в консоли</red>"
+  loading: "{P} <gray>Загружаю последнюю версию плагина...</gray>"
   action:
     impossible-launch: "ЗАПУСК ПЛАГИНА НЕВОЗМОЖЕН"
     no-recommended: "НЕ РЕКОМЕНДУЕМ ИСПОЛЬЗОВАТЬ ЭТОТ ПАТЧ"

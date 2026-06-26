@@ -59,6 +59,7 @@ public class PluginMessage extends OkaeriConfig {
         public String blacklist = "{P} <gray>You are running a blacklisted version of the plugin (<red>{CURRENT_VERSION}). <bold>{ACTION}.</bold></red> Please immediately install the latest version (<green>{LATEST_VERSION}</green>)";
         public String download = "{P} Download here — <yellow><click:open_url:{DOWNLOAD_LINK}>{DOWNLOAD_LINK}</click></yellow>";
         public String error = "{P_E} <red>An error occurred while fetching the plugin version. Learn more in the console";
+        public String loading = "{P} <gray>Loading the latest version of the plugin</gray>";
 
         public ActionSubConfig action = new ActionSubConfig();
 
