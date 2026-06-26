@@ -9,3 +9,7 @@ load: STARTUP
 
 authors: [ ILeZzoV ]
 website: https://t.me/ilezzov_plugins
+
+commands:
+  $command:
+    description: The main plugin command
