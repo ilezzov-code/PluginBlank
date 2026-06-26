@@ -50,6 +50,9 @@ public class PlayerJoinEvent implements Listener {
             case OUTDATED -> colorizer.parse(
                     this.message.version.outdated, placeholder
             );
+            case SUPPORTED -> colorizer.parse(
+                    this.message.version.supported, placeholder
+            );
             default -> null;
         };
 
