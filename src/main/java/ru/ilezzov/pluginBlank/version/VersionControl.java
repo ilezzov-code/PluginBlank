@@ -17,12 +17,11 @@ import ru.ilezzov.pluginBlank.placeholder.PluginPlaceholder;
 import ru.ilezzov.pluginBlank.properties.PluginProperties;
 
 public class VersionControl {
-    private final Plugin plugin;
+    private final Main plugin;
     private final PluginLogger pluginLogger;
     private final PluginConfig pluginConfig;
     private final VersionManager versionManager;
     private final PluginProperties properties;
-    private final PluginMessage message;
     private final BukkitAudiences audiences;
 
     private BukkitTask backgroundCheckTask;
@@ -34,11 +33,14 @@ public class VersionControl {
         this.pluginConfig = plugin.getPluginConfig();
         this.versionManager = plugin.getVersionManager();
         this.properties = plugin.getProperties();
-        this.message = plugin.getMessage();
         this.audiences = plugin.getAudiences();
     }
 
     public void startBackgroundCheckTask() {
+        if (this.backgroundCheckTask != null && !this.backgroundCheckTask.isCancelled()) {
+            this.backgroundCheckTask.cancel();
+        }
+
         final PluginConfig.VersionControl versionControl = pluginConfig.versionControl;
         final PluginConfig.Interval interval = versionControl.checkInterval;
         final PluginConfig.Security versionSecurity = versionControl.security;
@@ -58,10 +60,10 @@ public class VersionControl {
                         }
 
                         final PluginPlaceholder placeholder = new PluginPlaceholder(
-                                this.message.plugin.prefix, this.message.plugin.prefixError
+                                this.message().plugin.prefix, this.message().plugin.prefixError
                         );
                         
-                        final Colorizer colorizer = this.message.colorizer;
+                        final Colorizer colorizer = this.message().colorizer;
                         
                         placeholder.addPlaceholder("{CURRENT_VERSION}", this.properties.currentVersion());
                         placeholder.addPlaceholder("{LATEST_VERSION}", versionData.getLatest().getVersion());
@@ -70,7 +72,7 @@ public class VersionControl {
                         if (versionManager.getVersionType() == VersionType.LATEST) {
                             pluginLogger.info(
                                     colorizer.parse(
-                                            this.message.version.latest, placeholder
+                                            this.message().version.latest, placeholder
                                     )
                             );
                             return;
@@ -79,17 +81,17 @@ public class VersionControl {
                         switch (versionManager.getVersionType()) {
                             case SUPPORTED -> this.pluginLogger.info(
                                     colorizer.parse(
-                                            this.message.version.supported, placeholder
+                                            this.message().version.supported, placeholder
                                     )
                             );
                             case BLACKLIST -> {
                                 final String action = versionSecurity.lockdownOnCritical ? 
-                                        this.message.version.action.autoStopping : this.message.version.action.noRecommended;
+                                        this.message().version.action.autoStopping : this.message().version.action.noRecommended;
                                 placeholder.addPlaceholder("{ACTION}", action);
                                 
                                 this.pluginLogger.info(
                                         colorizer.parse(
-                                                this.message.version.blacklist, placeholder
+                                                this.message().version.blacklist, placeholder
                                         )
                                 );
                                 if (versionSecurity.lockdownOnCritical) {
@@ -98,12 +100,12 @@ public class VersionControl {
                             }
                             case OUTDATED -> {
                                 final String action = versionSecurity.lockdownOnCritical ?
-                                        this.message.version.action.autoStopping : this.message.version.action.noRecommended;
+                                        this.message().version.action.autoStopping : this.message().version.action.noRecommended;
                                 placeholder.addPlaceholder("{ACTION}", action);
                                 
                                 this.pluginLogger.info(
                                         colorizer.parse(
-                                                this.message.version.outdated, placeholder
+                                                this.message().version.outdated, placeholder
                                         )
                                 );
                                 if (versionSecurity.lockdownOnCritical) {
@@ -114,7 +116,7 @@ public class VersionControl {
 
                         pluginLogger.info(
                                 colorizer.parse(
-                                        this.message.version.download, placeholder
+                                        this.message().version.download, placeholder
                                 )
                         );
                     },
@@ -124,6 +126,10 @@ public class VersionControl {
     }
 
     public void startCriticalNotifyTask() {
+        if (this.criticalNotifyTask != null && !this.criticalNotifyTask.isCancelled()) {
+            this.criticalNotifyTask.cancel();
+        }
+
         final PluginConfig.Interval interval = this.pluginConfig.versionControl.security.criticalNotifyInterval;
         final long period = interval.unit.toSeconds(interval.value) * 20L;
 
@@ -133,21 +139,26 @@ public class VersionControl {
                     plugin,
                     () -> {
                         this.pluginLogger.debug("Sending critical notify message");
-                        final Colorizer colorizer = this.message.colorizer;
+                        final Colorizer colorizer = this.message().colorizer;
 
-                        final PluginPlaceholder placeholder = new PluginPlaceholder(this.message.plugin.prefix, this.message.plugin.prefixError);
+                        final VersionData versionData = this.versionManager.getVersionData();
+                        if (versionData == null) {
+                            return;
+                        }
+
+                        final PluginPlaceholder placeholder = new PluginPlaceholder(this.message().plugin.prefix, this.message().plugin.prefixError);
 
                         placeholder.addPlaceholder("{CURRENT_VERSION}", this.properties.currentVersion());
-                        placeholder.addPlaceholder("{DOWNLOAD_LINK}", this.versionManager.getVersionData().getLatest().getDownloadUrl());
-                        placeholder.addPlaceholder("{LATEST_VERSION}", this.versionManager.getVersionData().getLatest().getVersion());
-                        placeholder.addPlaceholder("{ACTION}", this.message.version.action.noRecommended);
+                        placeholder.addPlaceholder("{DOWNLOAD_LINK}", versionData.getLatest().getDownloadUrl());
+                        placeholder.addPlaceholder("{LATEST_VERSION}", versionData.getLatest().getVersion());
+                        placeholder.addPlaceholder("{ACTION}", this.message().version.action.noRecommended);
 
                         Component message = switch (versionManager.getVersionType()) {
                             case BLACKLIST -> colorizer.parse(
-                                    this.message.version.blacklist, placeholder
+                                    this.message().version.blacklist, placeholder
                             );
                             case OUTDATED -> colorizer.parse(
-                                    this.message.version.outdated, placeholder
+                                    this.message().version.outdated, placeholder
                             );
                             default -> null;
                         };
@@ -159,7 +170,7 @@ public class VersionControl {
                                         audiences.player(player).sendMessage(message);
                                         audiences.player(player).sendMessage(
                                                 colorizer.parse(
-                                                        this.message.version.download, placeholder
+                                                        this.message().version.download, placeholder
                                                 )
                                         );
                                     }
@@ -167,7 +178,7 @@ public class VersionControl {
                             });
                             this.pluginLogger.info(message);
                             this.pluginLogger.info(colorizer.parse(
-                                    this.message.version.download, placeholder
+                                    this.message().version.download, placeholder
                             ));
                         }
                     },
@@ -192,5 +203,9 @@ public class VersionControl {
 
             this.pluginLogger.debug("VersionControl.criticalNotifyTask is stopped");
         }
+    }
+    
+    private PluginMessage message() {
+        return this.plugin.getMessage();
     }
 }

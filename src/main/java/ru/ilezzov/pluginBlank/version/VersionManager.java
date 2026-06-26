@@ -5,17 +5,13 @@ import com.google.gson.JsonParseException;
 import lombok.Getter;
 import lombok.Setter;
 import ru.ilezzov.pluginBlank.logger.PluginLogger;
-import ru.ilezzov.pluginBlank.message.game.MessageManager;
 import ru.ilezzov.pluginBlank.model.Response;
 import ru.ilezzov.pluginBlank.properties.PluginProperties;
 import ru.ilezzov.pluginBlank.utils.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.ConnectException;
-import java.net.URI;
-import java.net.URL;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -69,8 +65,12 @@ public class VersionManager {
         try {
             final URI uri = URI.create(versionFileUrl);
             final URL url = uri.toURL();
+            final URLConnection connection = url.openConnection();
 
-            try (final InputStream in = url.openStream()) {
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+
+            try (final InputStream in = connection.getInputStream()) {
                 byte[] bytes = in.readAllBytes();
                 String content = new String(bytes, StandardCharsets.UTF_8);
 
@@ -87,10 +87,12 @@ public class VersionManager {
             return Response.error(NO_NETWORK_CONNECT_ERROR, e);
         } catch (final ConnectException e) {
             return Response.error(CONNECT_REJECTED_ERROR, e);
+        } catch (java.net.SocketTimeoutException e) {
+            return Response.error(CRITICAL_REQUEST_ERROR.formatted("Connection timed out"), e);
         } catch (JsonParseException e) {
             return Response.error(STRUCTURE_ERROR, e);
         } catch (IOException e) {
-            if (e.getMessage().contains("404")) {
+            if (e.getMessage() != null && e.getMessage().contains("404")) {
                 return Response.error(NOT_FOUND_ERROR, e);
             }
             return Response.error(IO_ERROR.formatted("version.json"), e);
