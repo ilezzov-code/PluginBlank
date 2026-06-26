@@ -124,16 +124,16 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (audiences != null) {
-            audiences.close();
-        }
-
         if (versionControl != null) {
             versionControl.stop();
         }
 
         if (eventManager != null) {
             eventManager.unregisterEvents();
+        }
+
+        if (audiences != null) {
+            audiences.close();
         }
     }
 
@@ -215,6 +215,15 @@ public final class Main extends JavaPlugin {
                 })
                 .saveDefaults()
                 .load(true);
+    }
+
+    public void reloadMessageFile(final String oldFile, final String file) {
+        if (oldFile.equalsIgnoreCase(file)) {
+            this.message.load();
+            return;
+        }
+
+        this.message = loadMessageFile(file.concat(".yml"));
     }
 
     private PluginMessage loadMessageFile(final String file) {
