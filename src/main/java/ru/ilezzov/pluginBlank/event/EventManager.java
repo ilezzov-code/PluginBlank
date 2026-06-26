@@ -39,8 +39,13 @@ public class EventManager {
     }
 
     public void unregisterEvents() {
-        HandlerList.unregisterAll(this.plugin);
-        logger.debug("Unregistered all events");
+        for (final Listener listener : this.registeredListener) {
+            HandlerList.unregisterAll(listener);
+        }
+
+        this.registeredListener.clear();
+
+        logger.debug("Unregistered all custom events");
     }
 
     public void reloadEvents() {
