@@ -1,16 +1,238 @@
 package ru.ilezzov.pluginBlank;
 
+import eu.okaeri.configs.ConfigManager;
+import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
+import lombok.Getter;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.bstats.bukkit.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.ilezzov.pluginBlank.color.Colorizer;
+import ru.ilezzov.pluginBlank.command.CommandManager;
+import ru.ilezzov.pluginBlank.event.EventManager;
+import ru.ilezzov.pluginBlank.file.PluginConfig;
+import ru.ilezzov.pluginBlank.file.PluginMessage;
+import ru.ilezzov.pluginBlank.logger.PluginLogger;
+import ru.ilezzov.pluginBlank.message.game.MessageManager;
+import ru.ilezzov.pluginBlank.model.Response;
+import ru.ilezzov.pluginBlank.placeholder.PluginPlaceholder;
+import ru.ilezzov.pluginBlank.properties.PluginProperties;
+import ru.ilezzov.pluginBlank.properties.PropertiesManager;
+import ru.ilezzov.pluginBlank.version.VersionControl;
+import ru.ilezzov.pluginBlank.version.VersionData;
+import ru.ilezzov.pluginBlank.version.VersionManager;
+import ru.ilezzov.pluginBlank.version.VersionType;
+
+import java.io.File;
+
+import static ru.ilezzov.pluginBlank.message.console.ErrorConstants.PROPERTIES_NOT_LOADED;
 
 public final class Main extends JavaPlugin {
+    @Getter
+    private BukkitAudiences audiences;
+
+    // logger
+    @Getter
+    private PluginLogger pluginLogger;
+
+    // message
+    @Getter
+    private MessageManager messageManager;
+
+    // properties
+    @Getter
+    private PluginProperties properties;
+
+    // version control
+    @Getter
+    private VersionManager versionManager;
+    @Getter
+    private VersionControl versionControl;
+
+    // files
+    @Getter
+    private PluginConfig pluginConfig;
+    @Getter
+    private PluginMessage message;
+
+    // events
+    @Getter
+    private EventManager eventManager;
+
+    // metrics
+    private Metrics metrics;
+
+
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+
+        // load audience
+        this.audiences = BukkitAudiences.create(this);
+
+        // load logger
+        this.pluginLogger = new PluginLogger(this, this.getName());
+
+        // load properties
+        final Response<PluginProperties> pluginPropertiesResponse = PropertiesManager.loadProperties("plugin.properties");
+
+        if (!pluginPropertiesResponse.success()) {
+            pluginLogger.error(PROPERTIES_NOT_LOADED.formatted(pluginPropertiesResponse.message()), pluginPropertiesResponse.error());
+            stop();
+            return;
+        }
+
+        this.properties = pluginPropertiesResponse.data();
+        if (properties == null) {
+            return;
+        }
+
+        // load files
+        this.pluginConfig = loadConfig();
+        if (pluginConfig.debug) {
+            pluginLogger.setDebug(true);
+            pluginLogger.debug("Debug mode is enabled");
+        }
+
+        this.message = loadMessageFile(this.pluginConfig.language.concat(".yml"));
+        this.messageManager = new MessageManager(this, this.audiences, this.message);
+
+        // check version
+        this.versionManager = new VersionManager(pluginLogger, properties);
+        if (this.pluginConfig.versionControl.checkOnStartup) {
+            if (!checkVersion()) {
+                stop();
+                return;
+            }
+        }
+
+        // version control
+        this.versionControl = new VersionControl(this);
+        versionControl.startBackgroundCheckTask();
+        versionControl.startCriticalNotifyTask();
+
+        // events
+        this.eventManager = new EventManager(this);
+        eventManager.registerEvents();
+
+        // commands
+        new CommandManager(this).loadCommands();
+
+        // load metrics
+        this.metrics = new Metrics(this, properties.bstats());
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        if (audiences != null) {
+            audiences.close();
+        }
+
+        if (versionControl != null) {
+            versionControl.stop();
+        }
+
+        if (eventManager != null) {
+            eventManager.unregisterEvents();
+        }
+    }
+
+    public void stop() {
+        Bukkit.getPluginManager().disablePlugin(this);
+    }
+
+    private boolean checkVersion() {
+        final VersionData versionData = versionManager.getVersionData();
+
+        if (versionData == null) {
+            return true;
+        }
+
+        final PluginPlaceholder placeholder = new PluginPlaceholder(
+                this.message.plugin.prefix, this.message.plugin.prefixError
+        );
+        
+        final Colorizer colorizer = this.message.colorizer;
+
+        placeholder.addPlaceholder("{CURRENT_VERSION}", this.properties.currentVersion());
+        placeholder.addPlaceholder("{LATEST_VERSION}", versionData.getLatest().getVersion());
+        placeholder.addPlaceholder("{DOWNLOAD_LINK}", versionData.getLatest().getDownloadUrl());
+
+        if (versionManager.getVersionType() == VersionType.LATEST) {
+            this.pluginLogger.info(
+                    colorizer.parse(
+                            this.message.version.latest, placeholder
+                    )
+            );
+            return true;
+        }
+
+        final boolean accepted = switch (versionManager.getVersionType()) {
+            case SUPPORTED -> {
+                pluginLogger.info(
+                        colorizer.parse(
+                                this.message.version.supported, placeholder
+                        )
+                );
+                yield true;
+            }
+            case BLACKLIST -> {
+                placeholder.addPlaceholder("{ACTION}", this.message.version.action.impossibleLaunch);
+                pluginLogger.info(
+                        colorizer.parse(
+                                this.message.version.blacklist, placeholder
+                        )
+                );
+                yield false;
+            }
+            case OUTDATED -> {
+                placeholder.addPlaceholder("{ACTION}", this.message.version.action.impossibleLaunch);
+                pluginLogger.info(
+                        colorizer.parse(
+                                this.message.version.outdated, placeholder
+                        )
+                );
+                yield false;
+            }
+            default -> true;
+        };
+
+        pluginLogger.info(
+                colorizer.parse(
+                        this.message.version.download, placeholder
+                )
+        );
+
+        return accepted;
+    }
+
+    private PluginConfig loadConfig() {
+        return (PluginConfig) ConfigManager.create(PluginConfig.class)
+                .configure(opt -> {
+                    opt.configurer(new YamlBukkitConfigurer());
+                    opt.bindFile(new File(this.getDataFolder(), "config.yml"));
+                    opt.removeOrphans(true);
+                })
+                .saveDefaults()
+                .load(true);
+    }
+
+    private PluginMessage loadMessageFile(final String file) {
+        final File messageDir = new File(this.getDataFolder(), "messages");
+        final File messageFile = new File(messageDir, file);
+
+        if (!messageFile.exists()) {
+            messageFile.getParentFile().mkdirs();
+            this.saveResource("messages/".concat(file), false);
+        }
+
+        return (PluginMessage) ConfigManager.create(PluginMessage.class)
+                .configure(opt -> {
+                    opt.configurer(new YamlBukkitConfigurer());
+                    opt.bindFile(messageFile);
+                    opt.removeOrphans(true);
+                })
+                .saveDefaults()
+                .load(true);
     }
 }
