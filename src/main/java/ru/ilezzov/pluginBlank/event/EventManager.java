@@ -5,7 +5,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import ru.ilezzov.pluginBlank.Main;
 import ru.ilezzov.pluginBlank.event.listeners.PlayerJoinEvent;
-import ru.ilezzov.pluginBlank.file.PluginConfig;
+import ru.ilezzov.pluginBlank.file.ConfigFile;
 import ru.ilezzov.pluginBlank.logger.PluginLogger;
 
 import java.util.HashSet;
@@ -14,14 +14,14 @@ import java.util.Set;
 
 public class EventManager {
     private final Main plugin;
-    private final PluginConfig pluginConfig;
+    private final ConfigFile configFile;
     private final PluginLogger logger;
 
     private final Set<Listener> registeredListener = new HashSet<>();
 
     public EventManager(final Main plugin) {
         this.plugin = plugin;
-        this.pluginConfig = this.plugin.getPluginConfig();
+        this.configFile = this.plugin.getConfigFile();
         this.logger = plugin.getPluginLogger();
     }
 
@@ -56,8 +56,8 @@ public class EventManager {
 
     private Map<Listener, Boolean> loadListeners() {
         return Map.ofEntries(
-                Map.entry(new PlayerJoinEvent(plugin.getVersionManager(), plugin.getMessage(), plugin.getAudiences(), plugin.getProperties()),
-                        this.pluginConfig.versionControl.notifyAdminsOnJoin)
+                Map.entry(new PlayerJoinEvent(plugin.getVersionManager(), plugin.getMessageFile(), plugin.getAudiences(), plugin.getProperties()),
+                        this.configFile.versionControl.notifyAdminsOnJoin)
         );
     }
 }
