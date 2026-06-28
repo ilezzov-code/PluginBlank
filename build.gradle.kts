@@ -10,14 +10,17 @@ repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.okaeri.cloud/releases")
+    maven("https://repo.kyngs.xyz/public/")
 }
 
 dependencies {
-    implementation("org.bstats:bstats-bukkit:3.2.1")
+    implementation("xyz.kyngs.libby:libby-bukkit:1.5.0")
 
-    implementation("net.kyori:adventure-api:4.17.0")
-    implementation("net.kyori:adventure-text-minimessage:4.17.0")
-    implementation("net.kyori:adventure-platform-bukkit:4.4.1")
+    compileOnly("org.bstats:bstats-bukkit:3.2.1")
+
+    compileOnly("net.kyori:adventure-api:4.17.0")
+    compileOnly("net.kyori:adventure-text-minimessage:4.17.0")
+    compileOnly("net.kyori:adventure-platform-bukkit:4.4.1")
 
     implementation("eu.okaeri:okaeri-configs-yaml-bukkit:6.1.0-beta.4")
     implementation("eu.okaeri:okaeri-configs-serdes-bukkit:6.1.0-beta.4")
@@ -45,6 +48,7 @@ tasks.named<ShadowJar>("shadowJar") {
 tasks.shadowJar {
     configurations = project.configurations.runtimeClasspath.map { setOf(it) }
 
+    relocate("net.byteflux.libby", "${project.group}.libs.libby")
     relocate("org.bstats", "${project.group}.libs.stats")
     relocate("eu.okaeri", "${project.group}.libs.okaeri")
     relocate("net.kyori", "${project.group}.libs.kyori")

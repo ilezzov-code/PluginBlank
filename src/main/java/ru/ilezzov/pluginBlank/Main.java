@@ -3,6 +3,10 @@ package ru.ilezzov.pluginBlank;
 import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
 import lombok.Getter;
+import net.byteflux.libby.BukkitLibraryManager;
+import net.byteflux.libby.Library;
+import net.byteflux.libby.LibraryManager;
+import net.byteflux.libby.relocation.Relocation;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -63,6 +67,10 @@ public final class Main extends JavaPlugin {
     private Metrics metrics;
 
 
+    @Override
+    public void onLoad() {
+        loadLibraries();
+    }
 
     @Override
     public void onEnable() {
@@ -243,5 +251,50 @@ public final class Main extends JavaPlugin {
                 })
                 .saveDefaults()
                 .load(true);
+    }
+
+    private void loadLibraries() {
+        final LibraryManager libraryManager = new BukkitLibraryManager(this);
+
+        libraryManager.addMavenCentral();
+        libraryManager.addSonatype();
+
+        final Relocation bStatsRelocation = new Relocation("org{}bstats", "ru{}ilezzov{}pluginBlank{}libs{}stats");
+        final Library bStats = Library.builder()
+                .groupId("org{}bstats")
+                .artifactId("bstats-bukkit")
+                .version("3.2.1")
+                .relocate(bStatsRelocation)
+                .resolveTransitiveDependencies(true)
+                .build();
+
+        final Relocation kyoriRelocation = new Relocation("net{}kyori", "ru{}ilezzov{}pluginBlank{}libs{}kyori");
+        final Library adventureApi = Library.builder()
+                .groupId("net{}kyori")
+                .artifactId("adventure-api")
+                .version("4.17.0")
+                .relocate(kyoriRelocation)
+                .resolveTransitiveDependencies(true)
+                .build();
+        final Library adventureTextMiniMessage = Library.builder()
+                .groupId("net{}kyori")
+                .artifactId("adventure-text-minimessage")
+                .version("4.17.0")
+                .relocate(kyoriRelocation)
+                .resolveTransitiveDependencies(true)
+                .build();
+        final Library adventurePlatformBukkit = Library.builder()
+                .groupId("net{}kyori")
+                .artifactId("adventure-platform-bukkit")
+                .version("4.4.1")
+                .relocate(kyoriRelocation)
+                .resolveTransitiveDependencies(true)
+                .build();
+
+        libraryManager.loadLibrary(bStats);
+
+        libraryManager.loadLibrary(adventureApi);
+        libraryManager.loadLibrary(adventureTextMiniMessage);
+        libraryManager.loadLibrary(adventurePlatformBukkit);
     }
 }
