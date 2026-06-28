@@ -14,9 +14,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import ru.ilezzov.pluginBlank.color.Colorizer;
 import ru.ilezzov.pluginBlank.command.CommandManager;
 import ru.ilezzov.pluginBlank.event.EventManager;
-import ru.ilezzov.pluginBlank.file.PluginConfig;
-import ru.ilezzov.pluginBlank.file.PluginMessage;
 import ru.ilezzov.pluginBlank.file.ConfigFile;
+import ru.ilezzov.pluginBlank.file.DatabaseFile;
 import ru.ilezzov.pluginBlank.file.MessageFile;
 import ru.ilezzov.pluginBlank.logger.PluginLogger;
 import ru.ilezzov.pluginBlank.message.game.MessageManager;
@@ -59,8 +58,9 @@ public final class Main extends JavaPlugin {
     @Getter
     private ConfigFile configFile;
     @Getter
-    private PluginMessage message;
     private MessageFile messageFile;
+    @Getter
+    private DatabaseFile databaseFile;
 
     // events
     @Getter
@@ -77,7 +77,6 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
         // load audience
         this.audiences = BukkitAudiences.create(this);
 
@@ -99,21 +98,20 @@ public final class Main extends JavaPlugin {
         }
 
         // load files
-        this.pluginConfig = loadConfig();
-        if (pluginConfig.debug) {
+        this.configFile = loadConfig();
+        if (configFile.debug) {
             pluginLogger.setDebug(true);
             pluginLogger.debug("Debug mode is enabled");
         }
 
-        this.message = loadMessageFile(this.pluginConfig.language.concat(".yml"));
-        this.messageManager = new MessageManager(this, this.audiences, this.message);
         this.messageFile = loadMessageFile(this.configFile.language.concat(".yml"));
         this.messageManager = new MessageManager(this, this.audiences, this.messageFile);
 
+        this.databaseFile = loadDatabaseFile();
 
         // check version
         this.versionManager = new VersionManager(pluginLogger, properties);
-        if (this.pluginConfig.versionControl.checkOnStartup) {
+        if (this.configFile.versionControl.checkOnStartup) {
             if (!checkVersion()) {
                 stop();
                 return;
@@ -163,10 +161,10 @@ public final class Main extends JavaPlugin {
         }
 
         final PluginPlaceholder placeholder = new PluginPlaceholder(
-                this.message.plugin.prefix, this.message.plugin.prefixError
+                this.messageFile.plugin.prefix, this.messageFile.plugin.prefixError
         );
         
-        final Colorizer colorizer = this.message.colorizer;
+        final Colorizer colorizer = this.messageFile.colorizer;
 
         placeholder.addPlaceholder("{CURRENT_VERSION}", this.properties.currentVersion());
         placeholder.addPlaceholder("{LATEST_VERSION}", versionData.getLatest().getVersion());
@@ -175,7 +173,7 @@ public final class Main extends JavaPlugin {
         if (versionManager.getVersionType() == VersionType.LATEST) {
             this.pluginLogger.info(
                     colorizer.parse(
-                            this.message.version.latest, placeholder
+                            this.messageFile.version.latest, placeholder
                     )
             );
             return true;
@@ -185,25 +183,25 @@ public final class Main extends JavaPlugin {
             case SUPPORTED -> {
                 pluginLogger.info(
                         colorizer.parse(
-                                this.message.version.supported, placeholder
+                                this.messageFile.version.supported, placeholder
                         )
                 );
                 yield true;
             }
             case BLACKLIST -> {
-                placeholder.addPlaceholder("{ACTION}", this.message.version.action.impossibleLaunch);
+                placeholder.addPlaceholder("{ACTION}", this.messageFile.version.action.impossibleLaunch);
                 pluginLogger.info(
                         colorizer.parse(
-                                this.message.version.blacklist, placeholder
+                                this.messageFile.version.blacklist, placeholder
                         )
                 );
                 yield false;
             }
             case OUTDATED -> {
-                placeholder.addPlaceholder("{ACTION}", this.message.version.action.impossibleLaunch);
+                placeholder.addPlaceholder("{ACTION}", this.messageFile.version.action.impossibleLaunch);
                 pluginLogger.info(
                         colorizer.parse(
-                                this.message.version.outdated, placeholder
+                                this.messageFile.version.outdated, placeholder
                         )
                 );
                 yield false;
@@ -213,15 +211,15 @@ public final class Main extends JavaPlugin {
 
         pluginLogger.info(
                 colorizer.parse(
-                        this.message.version.download, placeholder
+                        this.messageFile.version.download, placeholder
                 )
         );
 
         return accepted;
     }
 
-    private PluginConfig loadConfig() {
-        return (PluginConfig) ConfigManager.create(PluginConfig.class)
+    private ConfigFile loadConfig() {
+        return (ConfigFile) ConfigManager.create(ConfigFile.class)
                 .configure(opt -> {
                     opt.configurer(new YamlBukkitConfigurer());
                     opt.bindFile(new File(this.getDataFolder(), "config.yml"));
@@ -233,14 +231,14 @@ public final class Main extends JavaPlugin {
 
     public void reloadMessageFile(final String oldFile, final String file) {
         if (oldFile.equalsIgnoreCase(file)) {
-            this.message.load();
+            this.messageFile.load();
             return;
         }
 
-        this.message = loadMessageFile(file.concat(".yml"));
+        this.messageFile = loadMessageFile(file.concat(".yml"));
     }
 
-    private PluginMessage loadMessageFile(final String file) {
+    private MessageFile loadMessageFile(final String file) {
         final File messageDir = new File(this.getDataFolder(), "messages");
         final File messageFile = new File(messageDir, file);
 
@@ -249,10 +247,21 @@ public final class Main extends JavaPlugin {
             this.saveResource("messages/".concat(file), false);
         }
 
-        return (PluginMessage) ConfigManager.create(PluginMessage.class)
+        return (MessageFile) ConfigManager.create(MessageFile.class)
                 .configure(opt -> {
                     opt.configurer(new YamlBukkitConfigurer());
                     opt.bindFile(messageFile);
+                    opt.removeOrphans(true);
+                })
+                .saveDefaults()
+                .load(true);
+    }
+
+    private DatabaseFile loadDatabaseFile() {
+        return (DatabaseFile) ConfigManager.create(DatabaseFile.class)
+                .configure(opt -> {
+                    opt.configurer(new YamlBukkitConfigurer());
+                    opt.bindFile(new File(this.getDataFolder(), "database.yml"));
                     opt.removeOrphans(true);
                 })
                 .saveDefaults()
