@@ -7,8 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 import ru.ilezzov.pluginBlank.color.Colorizer;
-import ru.ilezzov.pluginBlank.file.PluginMessage;
-import ru.ilezzov.pluginBlank.message.game.MessageManager;
+import ru.ilezzov.pluginBlank.file.MessageFile;
 import ru.ilezzov.pluginBlank.permission.PermissionManager;
 import ru.ilezzov.pluginBlank.permission.Permissions;
 import ru.ilezzov.pluginBlank.placeholder.PluginPlaceholder;
@@ -17,11 +16,11 @@ import ru.ilezzov.pluginBlank.version.VersionManager;
 
 public class PlayerJoinEvent implements Listener {
     private final VersionManager versionManager;
-    private final PluginMessage message;
+    private final MessageFile message;
     private final BukkitAudiences audiences;
     private final PluginProperties properties;
 
-    public PlayerJoinEvent(final VersionManager versionManager, final PluginMessage message, final BukkitAudiences audiences, final PluginProperties properties) {
+    public PlayerJoinEvent(final VersionManager versionManager, final MessageFile message, final BukkitAudiences audiences, final PluginProperties properties) {
         this.versionManager = versionManager;
         this.message = message;
         this.audiences = audiences;

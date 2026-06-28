@@ -7,7 +7,7 @@ import eu.okaeri.configs.annotation.Comment;
 import eu.okaeri.configs.annotation.CustomKey;
 import ru.ilezzov.pluginBlank.color.Colorizer;
 
-public class PluginMessage extends OkaeriConfig {
+public class MessageFile extends OkaeriConfig {
     @Comment({
             "The plugin supports all types of message formatting.",
             "LEGACY — Color via & / § and HEX via &#rrggbb / §#rrggbb or &x&r&r&g&g&b&b / §x§r§r§g§g§b§b",

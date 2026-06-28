@@ -4,12 +4,11 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 import ru.ilezzov.pluginBlank.Main;
 import ru.ilezzov.pluginBlank.color.Colorizer;
-import ru.ilezzov.pluginBlank.file.PluginConfig;
-import ru.ilezzov.pluginBlank.file.PluginMessage;
+import ru.ilezzov.pluginBlank.file.ConfigFile;
+import ru.ilezzov.pluginBlank.file.MessageFile;
 import ru.ilezzov.pluginBlank.logger.PluginLogger;
 import ru.ilezzov.pluginBlank.permission.PermissionManager;
 import ru.ilezzov.pluginBlank.permission.Permissions;
@@ -19,7 +18,7 @@ import ru.ilezzov.pluginBlank.properties.PluginProperties;
 public class VersionControl {
     private final Main plugin;
     private final PluginLogger pluginLogger;
-    private final PluginConfig pluginConfig;
+    private final ConfigFile configFile;
     private final VersionManager versionManager;
     private final PluginProperties properties;
     private final BukkitAudiences audiences;
@@ -30,7 +29,7 @@ public class VersionControl {
     public VersionControl(final Main plugin) {
         this.plugin = plugin;
         this.pluginLogger = plugin.getPluginLogger();
-        this.pluginConfig = plugin.getPluginConfig();
+        this.configFile = plugin.getConfigFile();
         this.versionManager = plugin.getVersionManager();
         this.properties = plugin.getProperties();
         this.audiences = plugin.getAudiences();
@@ -41,9 +40,9 @@ public class VersionControl {
             this.backgroundCheckTask.cancel();
         }
 
-        final PluginConfig.VersionControl versionControl = pluginConfig.versionControl;
-        final PluginConfig.Interval interval = versionControl.checkInterval;
-        final PluginConfig.Security versionSecurity = versionControl.security;
+        final ConfigFile.VersionControl versionControl = configFile.versionControl;
+        final ConfigFile.Interval interval = versionControl.checkInterval;
+        final ConfigFile.Security versionSecurity = versionControl.security;
         final long period = interval.unit.toSeconds(interval.value) * 20L;
 
         if (interval.enable) {
@@ -130,7 +129,7 @@ public class VersionControl {
             this.criticalNotifyTask.cancel();
         }
 
-        final PluginConfig.Interval interval = this.pluginConfig.versionControl.security.criticalNotifyInterval;
+        final ConfigFile.Interval interval = this.configFile.versionControl.security.criticalNotifyInterval;
         final long period = interval.unit.toSeconds(interval.value) * 20L;
 
         if (interval.enable) {
@@ -205,7 +204,7 @@ public class VersionControl {
         }
     }
     
-    private PluginMessage message() {
-        return this.plugin.getMessage();
+    private MessageFile message() {
+        return this.plugin.getMessageFile();
     }
 }

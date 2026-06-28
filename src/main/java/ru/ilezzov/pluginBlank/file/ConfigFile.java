@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
         "• Card: 2200700733487101",
         ""
 })
-public class PluginConfig extends OkaeriConfig {
+public class ConfigFile extends OkaeriConfig {
 
     @Comment({
             "Supporting messages languages / Доступные языки сообщений:",

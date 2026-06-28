@@ -16,6 +16,8 @@ import ru.ilezzov.pluginBlank.command.CommandManager;
 import ru.ilezzov.pluginBlank.event.EventManager;
 import ru.ilezzov.pluginBlank.file.PluginConfig;
 import ru.ilezzov.pluginBlank.file.PluginMessage;
+import ru.ilezzov.pluginBlank.file.ConfigFile;
+import ru.ilezzov.pluginBlank.file.MessageFile;
 import ru.ilezzov.pluginBlank.logger.PluginLogger;
 import ru.ilezzov.pluginBlank.message.game.MessageManager;
 import ru.ilezzov.pluginBlank.model.Response;
@@ -55,9 +57,10 @@ public final class Main extends JavaPlugin {
 
     // files
     @Getter
-    private PluginConfig pluginConfig;
+    private ConfigFile configFile;
     @Getter
     private PluginMessage message;
+    private MessageFile messageFile;
 
     // events
     @Getter
@@ -104,6 +107,9 @@ public final class Main extends JavaPlugin {
 
         this.message = loadMessageFile(this.pluginConfig.language.concat(".yml"));
         this.messageManager = new MessageManager(this, this.audiences, this.message);
+        this.messageFile = loadMessageFile(this.configFile.language.concat(".yml"));
+        this.messageManager = new MessageManager(this, this.audiences, this.messageFile);
+
 
         // check version
         this.versionManager = new VersionManager(pluginLogger, properties);

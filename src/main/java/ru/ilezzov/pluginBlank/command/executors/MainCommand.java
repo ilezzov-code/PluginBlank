@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 import ru.ilezzov.pluginBlank.Main;
-import ru.ilezzov.pluginBlank.file.PluginMessage;
+import ru.ilezzov.pluginBlank.file.MessageFile;
 import ru.ilezzov.pluginBlank.message.game.MessageManager;
 import ru.ilezzov.pluginBlank.permission.PermissionManager;
 import ru.ilezzov.pluginBlank.permission.Permissions;
@@ -153,11 +153,11 @@ public class MainCommand implements CommandExecutor, TabExecutor {
             return;
         }
 
-        final String oldMessageFile = this.plugin.getPluginConfig().language;
+        final String oldMessageFile = this.plugin.getConfigFile().language;
 
-        this.plugin.getPluginConfig().load();
+        this.plugin.getConfigFile().load();
 
-        final String messageFile = this.plugin.getPluginConfig().language;
+        final String messageFile = this.plugin.getConfigFile().language;
         this.plugin.reloadMessageFile(oldMessageFile, messageFile);
 
         this.plugin.getEventManager().reloadEvents();
@@ -172,7 +172,7 @@ public class MainCommand implements CommandExecutor, TabExecutor {
 
     }
 
-    private PluginMessage message() {
-        return this.plugin.getMessage();
+    private MessageFile message() {
+        return this.plugin.getMessageFile();
     }
 }
